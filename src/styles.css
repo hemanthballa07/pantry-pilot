@@ -1,0 +1,269 @@
+/* PantryPilot — Design tokens */
+
+:root {
+  /* Warm cream palette */
+  --bg: #FAF6EE;
+  --bg-tint: #F4EEDF;
+  --paper: #FFFFFF;
+  --paper-warm: #FDFAF3;
+  --ink: #221F1A;
+  --ink-2: #3D372E;
+  --ink-muted: #6F665A;
+  --ink-soft: #9A917F;
+  --line: #ECE5D2;
+  --line-strong: #DDD3BA;
+  --line-soft: #F3EEDC;
+
+  /* Brand colors */
+  --green: #3B6E3D;
+  --green-deep: #2A5230;
+  --green-soft: #E5EBD5;
+  --green-tint: #EFF2E1;
+  --orange: #D9722B;
+  --orange-deep: #B85C1F;
+  --orange-soft: #F7E2CB;
+  --orange-tint: #FBEEDC;
+  --tomato: #C73E2E;
+  --tomato-soft: #F2D5CC;
+  --amber: #C99325;
+  --amber-soft: #F1E2BA;
+  --basil: #6B8E4E;
+  --plum: #6E3A4F;
+  --sky: #3A5F7A;
+  --sky-soft: #D9E4EC;
+
+  /* Semantic “on-tint” colors — readable text/icon/border on tinted surfaces.
+     These swap in dark mode so amber/tomato/sky cards stay legible. */
+  --amber-ink:  #7E5C12;
+  --tomato-ink: #8E2A1F;
+  --sky-ink:    #1F3B52;
+  --amber-line:  #E8D38D;
+  --tomato-line: #E8B5A6;
+  --orange-line: #E8C28B;
+  /* Light overlay used inside tinted cards (icon bubbles, secondary chips). */
+  --on-tint-pad:      rgba(255,255,255,.6);
+  --on-tint-pad-soft: rgba(255,255,255,.4);
+  --on-tint-divider:  rgba(0,0,0,.06);
+  --on-tint-border:   rgba(0,0,0,.04);
+
+  /* Status semantics */
+  --ok: var(--green);
+  --warn: var(--amber);
+  --danger: var(--tomato);
+  --info: var(--sky);
+
+  /* Spacing scale (used by ad-hoc classes) */
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
+  --r-2xl: 28px;
+  --r-pill: 999px;
+
+  /* Shadows — warm, soft */
+  --sh-1: 0 1px 0 rgba(60, 50, 30, 0.04), 0 1px 2px rgba(60, 50, 30, 0.04);
+  --sh-2: 0 1px 0 rgba(60, 50, 30, 0.04), 0 4px 14px -4px rgba(60, 50, 30, 0.08);
+  --sh-3: 0 2px 6px -2px rgba(60, 50, 30, 0.08), 0 12px 28px -8px rgba(60, 50, 30, 0.14);
+  --sh-lift: 0 4px 10px -4px rgba(60, 50, 30, 0.10), 0 22px 44px -16px rgba(60, 50, 30, 0.18);
+
+  /* Type */
+  --font-display: "Newsreader", "Source Serif Pro", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Geist", "Söhne", -apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+/* Dark mode tokens */
+[data-theme="dark"] {
+  --bg: #1A1714;
+  --bg-tint: #221E1A;
+  --paper: #232019;
+  --paper-warm: #2A2620;
+  --ink: #F3EEDD;
+  --ink-2: #DCD5C0;
+  --ink-muted: #9C9381;
+  --ink-soft: #6E6757;
+  --line: #34302A;
+  --line-strong: #423D34;
+  --line-soft: #2B2722;
+
+  --green: #6B9B5E;
+  --green-deep: #538F4B;
+  --green-soft: #2F4030;
+  --green-tint: #283626;
+  --orange: #E08E4F;
+  --orange-deep: #C97432;
+  --orange-soft: #4A3422;
+  --orange-tint: #3A2A1C;
+  --tomato: #D55F4F;
+  --tomato-soft: #4A2722;
+  --amber: #DDA94A;
+  --amber-soft: #443723;
+  --basil: #8FAE6E;
+  --plum: #9E607A;
+  --sky: #6A92AE;
+  --sky-soft: #2C3A48;
+
+  /* Dark-mode “on-tint” swaps — tinted surfaces are now dark, so we need
+     light ink and subtle overlay pads. */
+  --amber-ink:  #F0C77A;
+  --tomato-ink: #F0A398;
+  --sky-ink:    #9EC7E8;
+  --amber-line:  #5C4A28;
+  --tomato-line: #5C322B;
+  --orange-line: #5A3E22;
+  --on-tint-pad:      rgba(255,255,255,.06);
+  --on-tint-pad-soft: rgba(255,255,255,.03);
+  --on-tint-divider:  rgba(255,255,255,.06);
+  --on-tint-border:   rgba(255,255,255,.04);
+
+  --sh-1: 0 1px 0 rgba(0,0,0,0.3), 0 1px 2px rgba(0,0,0,0.2);
+  --sh-2: 0 1px 0 rgba(0,0,0,0.3), 0 4px 14px -4px rgba(0,0,0,0.4);
+  --sh-3: 0 2px 6px -2px rgba(0,0,0,0.4), 0 12px 28px -8px rgba(0,0,0,0.5);
+  --sh-lift: 0 4px 10px -4px rgba(0,0,0,0.4), 0 22px 44px -16px rgba(0,0,0,0.55);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "cv11";
+}
+
+button { font-family: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible, input:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.serif { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.01em; }
+.mono { font-family: var(--font-mono); }
+.num { font-feature-settings: "tnum"; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 999px; border: 2px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-soft); }
+
+/* Drawer / modal */
+.pp-overlay {
+  position: fixed; inset: 0;
+  background: rgba(34, 31, 26, 0.32);
+  backdrop-filter: blur(2px);
+  z-index: 80;
+  animation: ppFade 180ms ease-out;
+}
+[data-theme="dark"] .pp-overlay { background: rgba(0,0,0,0.55); }
+
+.pp-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: 480px; max-width: 92vw;
+  background: var(--paper); border-left: 1px solid var(--line);
+  z-index: 81;
+  display: flex; flex-direction: column;
+  animation: ppSlideIn 220ms cubic-bezier(.2,.8,.2,1);
+  box-shadow: var(--sh-lift);
+}
+@keyframes ppSlideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes ppFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes ppPop { from { transform: scale(.96); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.pp-modal {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background: var(--paper); border-radius: 18px; border: 1px solid var(--line);
+  z-index: 81; box-shadow: var(--sh-lift);
+  animation: ppPop 200ms cubic-bezier(.2,.8,.2,1);
+}
+
+/* Toast */
+.pp-toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  background: var(--ink); color: var(--paper-warm);
+  border-radius: 14px; padding: 12px 16px 12px 14px;
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; font-weight: 500;
+  box-shadow: var(--sh-3); z-index: 90;
+  animation: ppToastIn 220ms cubic-bezier(.2,.8,.2,1);
+}
+@keyframes ppToastIn { from { transform: translate(-50%, 8px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+
+/* Receipt scanning beam pulse */
+@keyframes ppDetectPulse {
+  0%   { opacity: 0;   transform: scaleX(.6); }
+  40%  { opacity: 1;   transform: scaleX(1); }
+  100% { opacity: 0;   transform: scaleX(1); }
+}
+
+/* Card hover lift */
+.lift { transition: transform 160ms ease, box-shadow 200ms ease, border-color 160ms ease; }
+.lift:hover { transform: translateY(-2px); box-shadow: var(--sh-3); }
+
+/* Subtle paper texture */
+.paper-grain {
+  background-color: var(--paper-warm);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(60, 50, 30, 0.025) 1px, transparent 0);
+  background-size: 18px 18px;
+}
+
+/* Ring / progress */
+.ring-track { stroke: var(--line); fill: none; }
+.ring-fill { fill: none; stroke-linecap: round; transition: stroke-dashoffset 600ms cubic-bezier(.2,.8,.2,1); }
+
+/* Mini bar chart */
+.tnum { font-variant-numeric: tabular-nums; }
+
+/* Tweaks panel placement override (bottom-right, smaller) */
+.tweaks-host { font-family: var(--font-sans); }
+
+/* ───────── Cook-mode card deck ───────── */
+.cook-deck {
+  position: relative;
+  flex: 1;
+  min-height: 460px;
+  perspective: 1600px;
+}
+.cook-card {
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  min-height: 460px;
+  padding: 34px 36px 32px;
+  background: linear-gradient(165deg, var(--paper-warm) 0%, var(--bg) 100%);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: var(--sh-2);
+  transition:
+    transform  560ms cubic-bezier(.25,.8,.25,1),
+    opacity    560ms cubic-bezier(.25,.8,.25,1),
+    box-shadow 560ms cubic-bezier(.25,.8,.25,1);
+  transform-origin: 50% 0%;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+  overflow: hidden;
+}
+
+.cook-card--top    { z-index: 50; box-shadow: var(--sh-lift);
+                     transform: translateY(0)     scale(1)    rotate(0deg);   opacity: 1; }
+.cook-card--peek-1 { z-index: 40;
+                     transform: translateY(28px)  scale(.97)  rotate(-.6deg); opacity: 1; }
+.cook-card--peek-2 { z-index: 30;
+                     transform: translateY(54px)  scale(.94)  rotate(.7deg);  opacity: .95; }
+.cook-card--peek-3 { z-index: 20;
+                     transform: translateY(80px)  scale(.91)  rotate(-.5deg); opacity: .9; }
+.cook-card--past   { z-index: 5;
+                     transform: translateY(104px) scale(.88)  rotate(0deg);   opacity: .22;
+                     pointer-events: none; }
+.cook-card--hidden { z-index: 0;
+                     transform: translateY(140px) scale(.85)  rotate(0deg);   opacity: 0;
+                     pointer-events: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cook-card { transition: opacity 200ms ease; }
+}
