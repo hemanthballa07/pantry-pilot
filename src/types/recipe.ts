@@ -1,9 +1,11 @@
 // Recipe domain: recipe summaries (from PP_DATA.recipes), full cook scripts
 // (from RECIPE_DEF), and the craving / unlock prompt shapes.
 
-// Nominal-by-convention. Values look like 'r1', 'r2', ..., but no caller
-// enumerates them, so a plain string is the honest type.
-export type RecipeId = string;
+// Template literal type — matches 'r1', 'r2', ..., 'r999' etc. but
+// rejects typos like 'rl1' or 'r88x' at compile time. Narrow enough
+// to catch mistakes; wide enough to avoid enumerating all 22 ids.
+// Code-reviewer audit (MEDIUM) — tightened before Phase 3 consumers.
+export type RecipeId = `r${number}`;
 
 export type Cuisine =
   | 'Indo-Chinese'
