@@ -10,7 +10,6 @@ interface Props { screenId: string; }
 const SCREEN_MAP: Record<string, { global: string; comp: string }> = {
   cook:      { global: 'PPRecipes',   comp: 'Cook'      },
   plan:      { global: 'PPPlanner',   comp: 'Planner'   },
-  shop:      { global: 'PPGrocery',   comp: 'Grocery'   },
   insights:  { global: 'PPExtras',    comp: 'Insights'  },
   household: { global: 'PPExtras',    comp: 'Household' },
   settings:  { global: 'PPExtras',    comp: 'Settings'  },
