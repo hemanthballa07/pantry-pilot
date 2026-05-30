@@ -3,6 +3,7 @@ import { RootLayout } from './RootLayout';
 import { ShellLayout } from './ShellLayout';
 import Landing from '@/screens/Landing';
 import Health from '@/screens/Health';
+import Dashboard from '@/screens/Dashboard';
 import { LegacyBridge } from '@/compat/bridge';
 
 function NotFound() {
@@ -48,7 +49,7 @@ export const router = createBrowserRouter([
       {
         element: <ShellLayout />,
         children: [
-          { path: '/dashboard', element: <LegacyBridge screenId="dashboard" /> },
+          { path: '/dashboard', element: <Dashboard /> },
           { path: '/pantry',    element: <LegacyBridge screenId="pantry" /> },
           { path: '/cook',      element: <LegacyBridge screenId="cook" /> },
           { path: '/plan',      element: <LegacyBridge screenId="plan" /> },
