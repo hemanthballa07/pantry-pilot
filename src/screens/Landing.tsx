@@ -615,7 +615,7 @@ export default function Landing() {
         borderBottom: '1px solid var(--line-soft, rgba(0,0,0,.07))',
         padding: '16px 48px', display: 'flex', alignItems: 'center', gap: 28,
       }}>
-        <button onClick={goto('page-top')} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}>
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'transparent', border: 'none', cursor: 'pointer', padding: 0 }}>
           <Logo size={30} />
           <div className="serif" style={{ fontSize: 19, letterSpacing: -0.3, color: 'var(--ink, #1a1814)' }}>PantryPilot</div>
         </button>
