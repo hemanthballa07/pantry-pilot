@@ -2,6 +2,7 @@ import { createBrowserRouter, useNavigate } from 'react-router-dom';
 import { RootLayout } from './RootLayout';
 import { ShellLayout } from './ShellLayout';
 import Landing from '@/screens/Landing';
+import Health from '@/screens/Health';
 import { LegacyBridge } from '@/compat/bridge';
 
 function NotFound() {
@@ -52,7 +53,7 @@ export const router = createBrowserRouter([
           { path: '/cook',      element: <LegacyBridge screenId="cook" /> },
           { path: '/plan',      element: <LegacyBridge screenId="plan" /> },
           { path: '/shop',      element: <LegacyBridge screenId="shop" /> },
-          { path: '/health',    element: <LegacyBridge screenId="health" /> },
+          { path: '/health',    element: <Health /> },
           { path: '/insights',  element: <LegacyBridge screenId="insights" /> },
           { path: '/household', element: <LegacyBridge screenId="household" /> },
           { path: '/settings',  element: <LegacyBridge screenId="settings" /> },
