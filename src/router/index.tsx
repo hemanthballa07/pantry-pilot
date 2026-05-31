@@ -7,6 +7,7 @@ import Dashboard from '@/screens/Dashboard';
 import Pantry from '@/screens/Pantry';
 import Shop from '@/screens/Shop';
 import Plan from '@/screens/Plan';
+import Cook from '@/screens/Cook';
 import { LegacyBridge } from '@/compat/bridge';
 
 function NotFound() {
@@ -54,7 +55,7 @@ export const router = createBrowserRouter([
         children: [
           { path: '/dashboard', element: <Dashboard /> },
           { path: '/pantry',    element: <Pantry /> },
-          { path: '/cook',      element: <LegacyBridge screenId="cook" /> },
+          { path: '/cook',      element: <Cook /> },
           { path: '/plan',      element: <Plan /> },
           { path: '/shop',      element: <Shop /> },
           { path: '/health',    element: <Health /> },

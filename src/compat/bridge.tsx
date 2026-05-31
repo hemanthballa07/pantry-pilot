@@ -8,7 +8,6 @@ interface Props { screenId: string; }
 
 // Maps router screenId → { globalKey, componentName } matching src/app.jsx:6-19
 const SCREEN_MAP: Record<string, { global: string; comp: string }> = {
-  cook:      { global: 'PPRecipes',   comp: 'Cook'      },
   insights:  { global: 'PPExtras',    comp: 'Insights'  },
   household: { global: 'PPExtras',    comp: 'Household' },
   settings:  { global: 'PPExtras',    comp: 'Settings'  },
