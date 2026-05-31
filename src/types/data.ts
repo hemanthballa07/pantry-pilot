@@ -9,18 +9,8 @@ import type {
   LowStockItem,
   Staples,
 } from './pantry';
-import type {
-  Craving,
-  NotebookEntry,
-  Recipe,
-  Unlock,
-} from './recipe';
-import type {
-  ActivityEntry,
-  HouseholdMember,
-  InboxEntry,
-  User,
-} from './household';
+import type { Craving, NotebookEntry, Recipe, Unlock } from './recipe';
+import type { ActivityEntry, HouseholdMember, InboxEntry, User } from './household';
 import type {
   Day,
   Leftover,
@@ -30,19 +20,8 @@ import type {
   TodayPlan,
   WasteRescue,
 } from './plan';
-import type {
-  Budget,
-  KitchenWin,
-  Nutrition,
-  Scores,
-  TakeoutSwap,
-  WasteLogEntry,
-} from './budget';
-import type {
-  CookBeforeShop,
-  PilotSuggestion,
-  Reel,
-} from './media';
+import type { Budget, KitchenWin, Nutrition, Scores, TakeoutSwap, WasteLogEntry } from './budget';
+import type { CookBeforeShop, PilotSuggestion, Reel } from './media';
 
 export interface PPData {
   user: User;

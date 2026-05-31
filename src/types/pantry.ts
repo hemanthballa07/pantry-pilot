@@ -19,23 +19,11 @@ export type ItemLocation = 'Fridge' | 'Pantry' | 'Freezer' | 'Counter';
 
 // Comment header in src/data.js lists six statuses; 'expired' is reserved
 // for the simulator but never appears in the current dataset.
-export type ItemStatus =
-  | 'today'
-  | 'tomorrow'
-  | 'week'
-  | 'fresh'
-  | 'frozen'
-  | 'expired';
+export type ItemStatus = 'today' | 'tomorrow' | 'week' | 'fresh' | 'frozen' | 'expired';
 
 export type ItemOwner = 'Hemanth' | 'Shared';
 
-export type StoreName =
-  | 'Aldi'
-  | 'Walmart'
-  | 'Publix'
-  | 'Costco'
-  | "Trader Joe's"
-  | '—';
+export type StoreName = 'Aldi' | 'Walmart' | 'Publix' | 'Costco' | "Trader Joe's" | '—';
 
 export interface Item {
   id: string;
@@ -105,12 +93,7 @@ export interface Staples {
   missing: StapleMissing[];
 }
 
-export type KitchenMemoryIcon =
-  | 'chef'
-  | 'alert'
-  | 'timer'
-  | 'wallet'
-  | 'heart';
+export type KitchenMemoryIcon = 'chef' | 'alert' | 'timer' | 'wallet' | 'heart';
 
 export interface KitchenMemoryEntry {
   id: string;

@@ -84,13 +84,7 @@ export interface WasteRescue {
   plan: WasteRescueStep[];
 }
 
-export type OccasionIcon =
-  | 'save'
-  | 'timer'
-  | 'users'
-  | 'leaf'
-  | 'snowflake'
-  | 'flame';
+export type OccasionIcon = 'save' | 'timer' | 'users' | 'leaf' | 'snowflake' | 'flame';
 
 export interface Occasion {
   id: string;

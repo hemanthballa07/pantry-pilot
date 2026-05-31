@@ -18,11 +18,7 @@ export type Cuisine =
   | 'Indian'
   | 'Chinese';
 
-export type Diet =
-  | 'Vegetarian'
-  | 'Vegan'
-  | 'High-protein'
-  | 'High-protein-add';
+export type Diet = 'Vegetarian' | 'Vegan' | 'High-protein' | 'High-protein-add';
 
 export type RecipeTag =
   | 'under-20'

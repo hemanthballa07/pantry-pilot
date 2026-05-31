@@ -23,14 +23,7 @@ export interface HouseholdMember {
   spent: number;
 }
 
-export type ActivityIcon =
-  | 'alert'
-  | 'cart'
-  | 'chef'
-  | 'bag'
-  | 'scan'
-  | 'save'
-  | 'plus';
+export type ActivityIcon = 'alert' | 'cart' | 'chef' | 'bag' | 'scan' | 'save' | 'plus';
 
 export interface ActivityEntry {
   when: string;

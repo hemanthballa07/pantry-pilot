@@ -17,7 +17,6 @@ interface ToastStore {
 // Mirrors window.PPToast(text, opts) call surface (src/app.jsx:67)
 export const useToastStore = create<ToastStore>((set) => ({
   current: null,
-  push: (text, opts) =>
-    set({ current: { text, tone: opts?.tone ?? 'default', key: ++toastSeq } }),
+  push: (text, opts) => set({ current: { text, tone: opts?.tone ?? 'default', key: ++toastSeq } }),
   dismiss: () => set({ current: null }),
 }));

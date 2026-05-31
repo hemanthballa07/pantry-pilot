@@ -82,7 +82,9 @@ for (const file of [...initialFiles].sort()) {
 
 const kb = (n) => (n / 1024).toFixed(1).padStart(7) + ' kB';
 
-console.log(`\nInitial-route JS — ${initialFiles.size} file(s) (entry + static imports; lazy route chunks excluded):`);
+console.log(
+  `\nInitial-route JS — ${initialFiles.size} file(s) (entry + static imports; lazy route chunks excluded):`,
+);
 for (const r of rows) console.log(`  ${kb(r.raw)} raw  ${kb(r.gz)} gz   ${r.file}`);
 console.log('  ' + '-'.repeat(56));
 console.log(`  ${kb(totalRaw)} raw  ${kb(totalGzip)} gz   TOTAL`);
@@ -91,8 +93,12 @@ console.log(`  budget:  ${kb(MAX_RAW)} raw  ${kb(MAX_GZIP)} gz\n`);
 const overRaw = totalRaw > MAX_RAW;
 const overGzip = totalGzip > MAX_GZIP;
 if (overRaw || overGzip) {
-  if (overRaw) console.error(`✗ initial raw JS ${kb(totalRaw).trim()} exceeds budget ${kb(MAX_RAW).trim()}`);
-  if (overGzip) console.error(`✗ initial gzip JS ${kb(totalGzip).trim()} exceeds budget ${kb(MAX_GZIP).trim()}`);
+  if (overRaw)
+    console.error(`✗ initial raw JS ${kb(totalRaw).trim()} exceeds budget ${kb(MAX_RAW).trim()}`);
+  if (overGzip)
+    console.error(
+      `✗ initial gzip JS ${kb(totalGzip).trim()} exceeds budget ${kb(MAX_GZIP).trim()}`,
+    );
   process.exit(1);
 }
 
