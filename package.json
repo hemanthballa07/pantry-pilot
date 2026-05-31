@@ -8,7 +8,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "size": "node scripts/check-bundle-size.mjs",
+    "build:check": "vite build && npm run size"
   },
   "dependencies": {
     "react": "^18.3.1",

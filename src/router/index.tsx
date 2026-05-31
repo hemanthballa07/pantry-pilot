@@ -1,14 +1,26 @@
+import { lazy } from 'react';
 import { createBrowserRouter, useNavigate } from 'react-router-dom';
 import { RootLayout } from './RootLayout';
 import { ShellLayout } from './ShellLayout';
-import Landing from '@/screens/Landing';
-import Health from '@/screens/Health';
-import Dashboard from '@/screens/Dashboard';
-import Pantry from '@/screens/Pantry';
-import Shop from '@/screens/Shop';
-import Plan from '@/screens/Plan';
-import Cook from '@/screens/Cook';
-import { Insights, Household, Settings, Imports } from '@/screens/Extras';
+
+// Phase 5 (workstream 1): screens are code-split with React.lazy so each route
+// ships its own chunk and leaves the entry bundle (OQ-005 budget). The shared
+// Suspense boundary lives in RootLayout. Layout components (RootLayout,
+// ShellLayout) and NotFound stay eager — tiny and needed on every navigation.
+const Landing = lazy(() => import('@/screens/Landing'));
+const Health = lazy(() => import('@/screens/Health'));
+const Dashboard = lazy(() => import('@/screens/Dashboard'));
+const Pantry = lazy(() => import('@/screens/Pantry'));
+const Shop = lazy(() => import('@/screens/Shop'));
+const Plan = lazy(() => import('@/screens/Plan'));
+const Cook = lazy(() => import('@/screens/Cook'));
+// The Extras quartet are named exports from one module; React.lazy needs a
+// default, so each adapts its named export. All four resolve the same Extras
+// chunk (finer splitting stays deferred — OQ-002 / ADR-004).
+const Insights = lazy(() => import('@/screens/Extras').then((m) => ({ default: m.Insights })));
+const Household = lazy(() => import('@/screens/Extras').then((m) => ({ default: m.Household })));
+const Settings = lazy(() => import('@/screens/Extras').then((m) => ({ default: m.Settings })));
+const Imports = lazy(() => import('@/screens/Extras').then((m) => ({ default: m.Imports })));
 
 function NotFound() {
   const navigate = useNavigate();

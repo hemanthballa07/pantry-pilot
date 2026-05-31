@@ -38,5 +38,9 @@ export default defineConfig({
   build: {
     target: 'es2022',
     sourcemap: true,
+    // Emit dist/.vite/manifest.json so scripts/check-bundle-size.mjs can
+    // identify the entry chunk and its static imports (the initial-route JS)
+    // versus the lazy route chunks. See the `size` / `build:check` npm scripts.
+    manifest: true,
   },
 });
