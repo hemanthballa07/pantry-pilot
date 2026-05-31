@@ -8,7 +8,7 @@ import Pantry from '@/screens/Pantry';
 import Shop from '@/screens/Shop';
 import Plan from '@/screens/Plan';
 import Cook from '@/screens/Cook';
-import { LegacyBridge } from '@/compat/bridge';
+import { Insights, Household, Settings, Imports } from '@/screens/Extras';
 
 function NotFound() {
   const navigate = useNavigate();
@@ -41,7 +41,7 @@ function NotFound() {
 
 // A2 nested router: Landing lives outside the shell (matches src/app.jsx:99-109
 // where landing renders without <Sidebar>/<TopBar>). All in-app screens sit
-// under ShellLayout. Each unconverted screen routes through LegacyBridge (D1).
+// under ShellLayout and are now native TSX — Phase 4 complete, LegacyBridge removed.
 export const router = createBrowserRouter([
   {
     element: <RootLayout />,
@@ -59,10 +59,10 @@ export const router = createBrowserRouter([
           { path: '/plan',      element: <Plan /> },
           { path: '/shop',      element: <Shop /> },
           { path: '/health',    element: <Health /> },
-          { path: '/insights',  element: <LegacyBridge screenId="insights" /> },
-          { path: '/household', element: <LegacyBridge screenId="household" /> },
-          { path: '/settings',  element: <LegacyBridge screenId="settings" /> },
-          { path: '/imports',   element: <LegacyBridge screenId="imports" /> },
+          { path: '/insights',  element: <Insights /> },
+          { path: '/household', element: <Household /> },
+          { path: '/settings',  element: <Settings /> },
+          { path: '/imports',   element: <Imports /> },
         ],
       },
       // Catch-all: replaces React Router's raw dev-mode error boundary for 404s

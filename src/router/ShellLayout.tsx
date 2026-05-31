@@ -1,9 +1,9 @@
 import { Outlet } from 'react-router-dom';
 
 // Shell layout — wraps in-app screens (dashboard, pantry, cook, …).
-// Phase 4 will add <Sidebar> + <TopBar> here once those components are
-// converted from src/shell.jsx. The Outlet currently renders LegacyBridge
-// placeholders that display the legacy prototype screens in Phase 4.
+// All Phase 4 screens are now native TSX (the LegacyBridge was removed when the
+// last screens converted). Phase 5 will add <Sidebar> + <TopBar> here once those
+// components are converted from src/shell.jsx.
 export function ShellLayout() {
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: 'var(--bg, #fafaf7)' }}>
