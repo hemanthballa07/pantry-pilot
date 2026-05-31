@@ -1,0 +1,50 @@
+import { test, expect } from '@playwright/test';
+
+// Every route must code-split cleanly: its lazy chunk resolves through the
+// Suspense boundary into real content, with no app console errors. Mirrors the
+// WS1 headless smoke; baseURL + preview server come from playwright.config.ts.
+const routes = [
+  { path: '/', label: 'Landing' },
+  { path: '/dashboard', label: 'Dashboard' },
+  { path: '/pantry', label: 'Pantry' },
+  { path: '/cook', label: 'Cook' },
+  { path: '/plan', label: 'Plan' },
+  { path: '/shop', label: 'Shop' },
+  { path: '/health', label: 'Health' },
+  { path: '/insights', label: 'Insights' },
+  { path: '/household', label: 'Household' },
+  { path: '/settings', label: 'Settings' },
+  { path: '/imports', label: 'Imports' },
+];
+
+for (const { path, label } of routes) {
+  test(`${path} (${label}) resolves its lazy chunk and renders without console errors`, async ({
+    page,
+  }) => {
+    const errors: string[] = [];
+    page.on('console', (m) => {
+      if (m.type() !== 'error') return;
+      const t = m.text();
+      if (/favicon|Failed to load resource/i.test(t)) return; // asset 404s ≠ app errors
+      errors.push(t);
+    });
+    page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
+
+    await page.goto(path, { waitUntil: 'networkidle' });
+
+    // The Suspense fallback ("Loading…") must resolve into real content.
+    await page.waitForFunction(() => {
+      const t = (document.body.innerText || '').trim();
+      return t.length > 15 && !/^loading…?$/i.test(t);
+    });
+
+    const text = (await page.locator('body').innerText()).trim();
+    expect(text.length).toBeGreaterThan(15);
+    expect(errors).toEqual([]);
+  });
+}
+
+test('unknown route renders the 404 page', async ({ page }) => {
+  await page.goto('/zzz-no-such-route', { waitUntil: 'networkidle' });
+  await expect(page.locator('body')).toContainText('404');
+});
