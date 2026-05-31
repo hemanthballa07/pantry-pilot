@@ -20,7 +20,7 @@
 import { useState, useMemo } from 'react';
 import type { CSSProperties, ReactNode, MouseEventHandler } from 'react';
 import { mock } from '@/data/mock';
-import { useToastStore, useNavStore } from '@/stores';
+import { useToastStore, useNavStore, useSearchStore } from '@/stores';
 import type { Recipe, Diet, Cuisine } from '@/types';
 
 // Non-reactive store access for event handlers (no subscription needed — the
@@ -1734,8 +1734,8 @@ type CookTab = 'explore' | 'discover' | 'reels' | 'craving' | 'unlocks' | 'noteb
 
 export default function Cook() {
   const [tab, setTab] = useState<CookTab>('explore');
-  // ShellLayout has no TopBar yet → search filter is a no-op (matches Pantry/Shop).
-  const search = '';
+  // Search comes from the shell TopBar via the search store (WS3).
+  const search = useSearchStore((s) => s.query);
   // Recipe-detail overlay and the CookNow card-deck (cook-mode.jsx) are not yet
   // converted — both give honest placeholder feedback instead of dead no-ops.
   const onOpenRecipe = (_id: string) => fireToast('Recipe detail opens in a later update');

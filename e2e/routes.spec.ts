@@ -48,3 +48,10 @@ test('unknown route renders the 404 page', async ({ page }) => {
   await page.goto('/zzz-no-such-route', { waitUntil: 'networkidle' });
   await expect(page.locator('body')).toContainText('404');
 });
+
+test('TopBar search filters the Cook screen end-to-end (WS3)', async ({ page }) => {
+  await page.goto('/cook', { waitUntil: 'networkidle' });
+  // Typing in the shell TopBar search writes the search store, which Cook reads.
+  await page.getByPlaceholder(/search or ask/i).fill('zzzznomatchqimpossible');
+  await expect(page.getByText(/no dishes match that search/i)).toBeVisible();
+});

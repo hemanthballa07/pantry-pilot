@@ -10,7 +10,7 @@ import { useState, useMemo } from 'react';
 import type { CSSProperties, ReactNode, MouseEventHandler } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { mock } from '@/data/mock';
-import { useToastStore, useNavStore } from '@/stores';
+import { useToastStore, useNavStore, useSearchStore } from '@/stores';
 
 // ─── Derived types ──────────────────────────────────────────────────────────
 
@@ -2117,6 +2117,8 @@ export default function Pantry() {
   const pushToast = useToastStore((s) => s.push);
   const openAddItem = useNavStore((s) => s.openAddItem);
   const openInbox = useNavStore((s) => s.openInbox);
+  // Search comes from the shell TopBar via the search store (WS3).
+  const search = useSearchStore((s) => s.query);
 
   const [tab, setTab] = useState('inventory');
 
@@ -2192,7 +2194,9 @@ export default function Pantry() {
       </div>
 
       <div style={{ paddingBottom: 56 }}>
-        {tab === 'inventory' && <InventoryView onOpenItem={onOpenItem} onAddItem={openAddItem} />}
+        {tab === 'inventory' && (
+          <InventoryView onOpenItem={onOpenItem} onAddItem={openAddItem} search={search} />
+        )}
         {tab === 'expiry' && <UseFirstView onOpenItem={onOpenItem} onCookNow={onCookNow} />}
         {tab === 'lowstock' && <LowStockView onNav={onNav} onToast={onToast} />}
         {tab === 'leftovers' && <LeftoversView onCookNow={onCookNow} onToast={onToast} />}
