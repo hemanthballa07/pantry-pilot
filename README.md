@@ -2,49 +2,49 @@
 
 A smart-kitchen command center — an AI assistant that watches your pantry, expiry dates, budget, and habits, and proactively helps you cook what you have, waste less, and shop smarter.
 
-> **Stage:** Phase 0 — high-fidelity React + Babel-standalone prototype handed off from Claude Design. Vite + TypeScript migration planned for Phases 1–6.
+> **Stage:** Phase 5 — production migration. Vite + React 18 + TypeScript (strict), React Router v7, Zustand. All 11 screens are native TypeScript; the original prototype is quarantined under `legacy/`.
 
-## Quickstart (Phase 0)
-
-The prototype is self-contained — no install step. It runs from any static-file server.
+## Quickstart
 
 ```bash
-python3 -m http.server 4173 --bind 127.0.0.1
-# open http://127.0.0.1:4173/PantryPilot.html
+npm install
+npm run dev      # Vite dev server at http://127.0.0.1:5173
 ```
+
+## Scripts
+
+| Script | What it does |
+|--------|--------------|
+| `npm run dev` | Vite dev server |
+| `npm run build` | Production build to `dist/` (route-split chunks) |
+| `npm run preview` | Serve the built bundle |
+| `npm run typecheck` | `tsc --noEmit` (strict) |
+| `npm run lint` | ESLint (flat config) |
+| `npm test` | Vitest unit/component tests |
+| `npm run e2e` | Playwright end-to-end route tests |
+| `npm run build:check` | Build + bundle-size budget guard (≤500 kB raw / ≤150 kB gzip initial JS) |
+| `npm run format` / `format:check` | Prettier write / check |
 
 ## What's inside
 
-- `PantryPilot.html` — prototype entry; loads React 18.3.1 + Babel standalone from unpkg
+- `src/main.tsx` → `src/App.tsx` → `src/router/` — `createBrowserRouter`, `RootLayout`, `ShellLayout` (Sidebar + TopBar)
+- `src/screens/*.tsx` — the 11 route screens (lazy-loaded)
+- `src/components/`, `src/stores/` (Zustand: toast / nav / search), `src/data/` (typed mock), `src/types/`
 - `src/styles.css` — design tokens (~70 CSS custom properties + dark theme)
-- `src/data.js` — `PP_DATA` mock (pantry, recipes, grocery, household, …)
-- `src/screens/*.jsx` — 16 screens (dashboard, pantry, cook-mode, plan, shop, …)
-- `src/components.jsx`, `src/shell.jsx`, `src/overlays.jsx` — UI primitives and drawers
-- `PROJECT_BRIEF.md` — full product spec and feature inventory (immutable)
-- `STATUS.md` — current-phase snapshot (read first on every session)
-- `PROJECT_LOG.md` — append-only history: Decisions, Sessions, Metrics, Open Questions
+- `legacy/` — original Babel-standalone prototype (reference only, not built)
 
-## For maintainers (Claude or human)
+## CI & deploy
 
-Start here on every session:
-1. `STATUS.md` — what phase, what's done, what's next
-2. `PROJECT_LOG.md` — tail of Sessions + any new ADRs
-3. `CLAUDE.md` — session protocol and engineering bar
-4. `PROJECT_BRIEF.md` only if touching product behavior
+- **CI** (`.github/workflows/ci.yml`): on every push to `main` and every PR, GitHub Actions runs `typecheck`, `lint`, `test`, `build:check`, and `e2e` on Node 22.
+- **Deploy** (Vercel): connected via Vercel's Git integration — each PR gets a preview URL, and `main` deploys to production. `vercel.json` sets the build/output and an SPA rewrite so client-side routes (e.g. `/cook`) resolve on deep-link and refresh.
 
 ## Roadmap
 
-| Phase | Scope |
-|-------|-------|
-| 0 ✅ | Docs, source-of-truth files, `.claude/` bundle, first commit |
-| 1 | Vite + TS scaffold; quarantine prototype to `legacy/` |
-| 2 | Port `data.js` + `recipe-defs.js` to TypeScript with ~50 interfaces |
-| 3 | Convert UI primitives to ES modules; error boundaries per route |
-| 4 | Convert 16 screens; React Router v6; Zustand for global actions |
-| 5 | Vitest + Playwright smoke tests |
-| 6 | GitHub Actions + Vercel deploy with PR previews |
-
-Full migration plan and decision rationale: see `PROJECT_LOG.md`.
+| Phase | Scope | |
+|-------|-------|---|
+| 0–4 | Docs → Vite/TS scaffold → typed data → UI modules → all 16 screens converted (Router v7 + Zustand) | ✅ |
+| 5 | Route-split + bundle budget · Vitest/RTL/ESLint/Prettier/Playwright · shell chrome + search · CI + Vercel | ✅ in progress |
+| 6 | Deferred overlays (recipe detail, cook mode, capture/scan, reels, checkout) | — |
 
 ## License
 
