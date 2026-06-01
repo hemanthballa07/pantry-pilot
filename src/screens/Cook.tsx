@@ -6,8 +6,8 @@
 //
 // All window.PP* globals removed: data from @/data/mock; toast via useToastStore,
 // inbox via useNavStore. Documented deviations from the legacy screen:
-//   1. onOpenRecipe → placeholder toast — the recipe-detail overlay (legacy
-//      app.jsx setRecipeId) is not yet converted.
+//   1. onOpenRecipe → opens the recipe-detail overlay via useNavStore.openRecipe
+//      (legacy app.jsx setRecipeId; rendered by <Overlays/> in RootLayout).
 //   2. onCookNow → placeholder toast — the CookNow card-deck overlay
 //      (cook-mode.jsx, window.PPCookMode.CookNow) is not yet converted;
 //      `window.PPCookNow` is already a no-op in the bridge.
@@ -1736,9 +1736,10 @@ export default function Cook() {
   const [tab, setTab] = useState<CookTab>('explore');
   // Search comes from the shell TopBar via the search store (WS3).
   const search = useSearchStore((s) => s.query);
-  // Recipe-detail overlay and the CookNow card-deck (cook-mode.jsx) are not yet
-  // converted — both give honest placeholder feedback instead of dead no-ops.
-  const onOpenRecipe = (_id: string) => fireToast('Recipe detail opens in a later update');
+  // Recipe-detail opens the overlay via the nav store (rendered by <Overlays/>).
+  // The CookNow card-deck (cook-mode.jsx) is not yet converted — honest
+  // placeholder feedback until that overlay lands.
+  const onOpenRecipe = (id: string) => useNavStore.getState().openRecipe(id);
   const onCookNow = (_id: string) => fireToast('Cook Mode opens in a later update');
 
   return (

@@ -7,6 +7,7 @@ const reset = () =>
     addItemOpen: false,
     inboxOpen: false,
     captureKind: null,
+    recipeId: null,
   });
 
 describe('useNavStore', () => {
@@ -41,5 +42,22 @@ describe('useNavStore', () => {
     expect(useNavStore.getState().captureKind).toBe('receipt');
     useNavStore.getState().setCapture(null);
     expect(useNavStore.getState().captureKind).toBeNull();
+  });
+
+  it('defaults recipeId to null', () => {
+    expect(useNavStore.getState().recipeId).toBeNull();
+  });
+
+  it('openRecipe sets the recipeId, closeRecipe clears it', () => {
+    useNavStore.getState().openRecipe('r1');
+    expect(useNavStore.getState().recipeId).toBe('r1');
+    useNavStore.getState().closeRecipe();
+    expect(useNavStore.getState().recipeId).toBeNull();
+  });
+
+  it('openRecipe replaces an already-open recipe', () => {
+    useNavStore.getState().openRecipe('r1');
+    useNavStore.getState().openRecipe('r7');
+    expect(useNavStore.getState().recipeId).toBe('r7');
   });
 });

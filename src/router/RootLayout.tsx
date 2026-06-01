@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { ToastBanner } from '@/components/ToastBanner';
 import { RouteFallback } from '@/components/RouteFallback';
+import { Overlays } from '@/overlays/Overlays';
 
 // Root layout — no shell chrome. Hosts the ToastBanner and Outlet for all routes.
 // The Suspense boundary catches the React.lazy route chunks (Phase 5 route-split
@@ -15,6 +16,9 @@ export function RootLayout() {
       <Suspense fallback={<RouteFallback />}>
         <Outlet />
       </Suspense>
+      {/* Overlay host — store-driven drawers/modals that render over any route,
+          above the shell chrome's stacking context (Phase 6). */}
+      <Overlays />
       <ToastBanner />
     </>
   );
