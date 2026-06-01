@@ -11,8 +11,9 @@
 //   2. onCookNow → opens the full-screen Cook Mode overlay via
 //      useNavStore.openCook (legacy cook-mode.jsx / window.PPCookMode.CookNow;
 //      rendered by <Overlays/> in RootLayout).
-//   3. The Reels tab renders a deferred placeholder — CookReels lives in the
-//      un-converted reels.jsx (window.PPReels), which has no route yet.
+//   3. The Reels tab renders the CookReels feed (src/screens/CookReels.tsx, the
+//      reels.jsx port) inline; its onCookNow/onOpenRecipe reuse this screen's
+//      openCook/openRecipe handlers.
 //   4. `search` is '' (ShellLayout has no TopBar yet, so the search filter is a
 //      no-op — matches Pantry/Shop). Wire through once the TopBar converts.
 //   5. The legacy toast `{ icon }` option is dropped (store derives glyph from tone).
@@ -22,6 +23,7 @@ import type { CSSProperties, ReactNode, MouseEventHandler } from 'react';
 import { mock } from '@/data/mock';
 import { useToastStore, useNavStore, useSearchStore } from '@/stores';
 import type { Recipe, Diet, Cuisine } from '@/types';
+import { CookReels } from './CookReels';
 
 // Non-reactive store access for event handlers (no subscription needed — the
 // screen never renders the toast/inbox itself; their hosts subscribe separately).
@@ -1708,26 +1710,6 @@ function Notebook({ onCookNow }: { onCookNow: (id: string) => void }) {
   );
 }
 
-// ═════════════ REELS (deferred — reels.jsx not yet converted) ════════════════
-
-function ReelsPlaceholder() {
-  return (
-    <div style={{ padding: '0 28px 28px' }}>
-      <Card pad={48} style={{ textAlign: 'center', color: 'var(--ink-muted)' }}>
-        <div style={{ marginBottom: 12, opacity: 0.6 }}>
-          <Illo name="chili" size={56} />
-        </div>
-        <div className="serif" style={{ fontSize: 20, color: 'var(--ink-2)', marginBottom: 4 }}>
-          Reels convert in a later phase
-        </div>
-        <div style={{ fontSize: 13 }}>
-          The cook-along reels view (reels.jsx) hasn't been migrated yet — the other tabs are live.
-        </div>
-      </Card>
-    </div>
-  );
-}
-
 // ─── Root ─────────────────────────────────────────────────────────────────
 
 type CookTab = 'explore' | 'discover' | 'reels' | 'craving' | 'unlocks' | 'notebook';
@@ -1774,7 +1756,7 @@ export default function Cook() {
         {tab === 'discover' && (
           <Recipes onOpenRecipe={onOpenRecipe} onCookNow={onCookNow} search={search} />
         )}
-        {tab === 'reels' && <ReelsPlaceholder />}
+        {tab === 'reels' && <CookReels onOpenRecipe={onOpenRecipe} onCookNow={onCookNow} />}
         {tab === 'craving' && <CravingMode onOpenRecipe={onOpenRecipe} onCookNow={onCookNow} />}
         {tab === 'unlocks' && <RecipeUnlocks />}
         {tab === 'notebook' && <Notebook onCookNow={onCookNow} />}
