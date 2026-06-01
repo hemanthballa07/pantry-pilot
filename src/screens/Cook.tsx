@@ -8,9 +8,9 @@
 // inbox via useNavStore. Documented deviations from the legacy screen:
 //   1. onOpenRecipe → opens the recipe-detail overlay via useNavStore.openRecipe
 //      (legacy app.jsx setRecipeId; rendered by <Overlays/> in RootLayout).
-//   2. onCookNow → placeholder toast — the CookNow card-deck overlay
-//      (cook-mode.jsx, window.PPCookMode.CookNow) is not yet converted;
-//      `window.PPCookNow` is already a no-op in the bridge.
+//   2. onCookNow → opens the full-screen Cook Mode overlay via
+//      useNavStore.openCook (legacy cook-mode.jsx / window.PPCookMode.CookNow;
+//      rendered by <Overlays/> in RootLayout).
 //   3. The Reels tab renders a deferred placeholder — CookReels lives in the
 //      un-converted reels.jsx (window.PPReels), which has no route yet.
 //   4. `search` is '' (ShellLayout has no TopBar yet, so the search filter is a
@@ -1736,11 +1736,11 @@ export default function Cook() {
   const [tab, setTab] = useState<CookTab>('explore');
   // Search comes from the shell TopBar via the search store (WS3).
   const search = useSearchStore((s) => s.query);
-  // Recipe-detail opens the overlay via the nav store (rendered by <Overlays/>).
-  // The CookNow card-deck (cook-mode.jsx) is not yet converted — honest
-  // placeholder feedback until that overlay lands.
+  // Recipe-detail and Cook Mode both open via the nav store (rendered by
+  // <Overlays/>): onOpenRecipe → the recipe-detail drawer, onCookNow → the
+  // full-screen cook-mode card deck.
   const onOpenRecipe = (id: string) => useNavStore.getState().openRecipe(id);
-  const onCookNow = (_id: string) => fireToast('Cook Mode opens in a later update');
+  const onCookNow = (id: string) => useNavStore.getState().openCook(id);
 
   return (
     <div style={{ padding: '28px 28px 0' }}>

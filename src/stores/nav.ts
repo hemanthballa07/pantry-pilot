@@ -8,6 +8,7 @@ interface NavStore {
   inboxOpen: boolean;
   captureKind: CaptureKind | null;
   recipeId: string | null;
+  cookId: string | null;
   openAskPilot: () => void;
   closeAskPilot: () => void;
   openAddItem: () => void;
@@ -17,6 +18,8 @@ interface NavStore {
   setCapture: (kind: CaptureKind | null) => void;
   openRecipe: (id: string) => void;
   closeRecipe: () => void;
+  openCook: (id: string) => void;
+  closeCook: () => void;
 }
 
 // Mirrors window.PPAskPilot / PPAddItem / PPInbox / PPCapture / PPOpenRecipe
@@ -28,6 +31,7 @@ export const useNavStore = create<NavStore>((set) => ({
   inboxOpen: false,
   captureKind: null,
   recipeId: null,
+  cookId: null,
   openAskPilot: () => set({ askPilotOpen: true }),
   closeAskPilot: () => set({ askPilotOpen: false }),
   openAddItem: () => set({ addItemOpen: true }),
@@ -37,4 +41,6 @@ export const useNavStore = create<NavStore>((set) => ({
   setCapture: (kind) => set({ captureKind: kind }),
   openRecipe: (id) => set({ recipeId: id }),
   closeRecipe: () => set({ recipeId: null }),
+  openCook: (id) => set({ cookId: id }),
+  closeCook: () => set({ cookId: null }),
 }));

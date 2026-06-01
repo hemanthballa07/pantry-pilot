@@ -14,14 +14,18 @@ import { useNavStore } from '@/stores/nav';
 const RecipeDetail = lazy(() =>
   import('./RecipeDetail').then((m) => ({ default: m.RecipeDetail })),
 );
+const CookMode = lazy(() => import('./CookMode').then((m) => ({ default: m.CookMode })));
 
 export function Overlays() {
   const recipeId = useNavStore((s) => s.recipeId);
   const closeRecipe = useNavStore((s) => s.closeRecipe);
+  const cookId = useNavStore((s) => s.cookId);
+  const closeCook = useNavStore((s) => s.closeCook);
 
   return (
     <Suspense fallback={null}>
       {recipeId && <RecipeDetail recipeId={recipeId} onClose={closeRecipe} />}
+      {cookId && <CookMode recipeId={cookId} onExit={closeCook} />}
     </Suspense>
   );
 }

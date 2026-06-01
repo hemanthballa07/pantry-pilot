@@ -3,17 +3,16 @@
 // + an onClose from the Overlays glue (which reads useNavStore), finds the
 // recipe in the mock, and renders it inside the shared Drawer shell.
 //
-// Deviation from legacy: "Start cooking" closes + fires a placeholder toast
-// until the Cook Mode overlay lands (Phase 6 overlay #2); it will then call the
-// store's openCook(recipe.id). Save / Add-missing fire toasts as in the legacy
-// (the toast {icon} option is dropped — the store derives the glyph). Primitives
+// "Start cooking" closes this drawer and opens the Cook Mode overlay via
+// useNavStore.openCook (legacy onCook). Save / Add-missing fire toasts as in the
+// legacy (the toast {icon} option is dropped — the store derives the glyph). Primitives
 // (Icon/Pill/Button) are inlined per the project's per-file convention; Drawer +
 // Illo come from the shared components/ layer.
 import type { ReactNode } from 'react';
 import { Drawer } from '@/components/Drawer';
 import { Illo } from '@/components/Illo';
 import { mock } from '@/data/mock';
-import { useToastStore } from '@/stores';
+import { useNavStore, useToastStore } from '@/stores';
 import type { Recipe } from '@/types';
 
 const fireToast = (msg: string) => useToastStore.getState().push(msg);
@@ -267,10 +266,10 @@ function RecipeDetailBody({ recipe, onClose }: { recipe: Recipe; onClose: () => 
   ];
 
   const startCooking = () => {
-    // Placeholder until the Cook Mode overlay lands (overlay #2). The legacy
-    // behavior closes this drawer then opens the cook-mode card deck.
+    // Close the drawer and hand off to the full-screen Cook Mode overlay
+    // (legacy onCook: setRecipeId(null) then cookNow(rid)).
     onClose();
-    fireToast('Cook Mode opens in a later update');
+    useNavStore.getState().openCook(recipe.id);
   };
 
   return (
