@@ -9,6 +9,7 @@ const reset = () =>
     captureKind: null,
     recipeId: null,
     cookId: null,
+    checkoutOpen: false,
   });
 
 describe('useNavStore', () => {
@@ -71,5 +72,17 @@ describe('useNavStore', () => {
     expect(useNavStore.getState().cookId).toBe('r1');
     useNavStore.getState().closeCook();
     expect(useNavStore.getState().cookId).toBeNull();
+  });
+
+  it('defaults checkoutOpen to false', () => {
+    expect(useNavStore.getState().checkoutOpen).toBe(false);
+  });
+
+  it('openCheckout / closeCheckout toggle only that flag', () => {
+    useNavStore.getState().openCheckout();
+    expect(useNavStore.getState().checkoutOpen).toBe(true);
+    expect(useNavStore.getState().recipeId).toBeNull();
+    useNavStore.getState().closeCheckout();
+    expect(useNavStore.getState().checkoutOpen).toBe(false);
   });
 });

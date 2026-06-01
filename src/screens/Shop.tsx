@@ -9,8 +9,9 @@
 //   1. The ScanReceipt overlay (window.PPScanReceipt) is not yet converted — the
 //      "Scan receipt" button opens the Inbox via useNavStore.openInbox, matching
 //      Pantry.tsx. The standalone scan-receipt flow converts in a later phase.
-//   2. The checkout overlay (window.PPCheckoutOpen) is deferred — the "Check out"
-//      button shows a placeholder toast (honest feedback beats a dead no-op).
+//   2. The "Check out" button opens the checkout overlay via
+//      useNavStore.openCheckout (Phase 6 overlay #3 — src/overlays/Checkout.tsx),
+//      replacing the legacy window.PPCheckoutOpen / earlier placeholder toast.
 //   3. The legacy toast `{ icon }` option is dropped — the toast store is
 //      push(text, { tone? }) and derives its glyph from tone.
 // onOpenRecipe / onCookNow navigate to /cook (recipe detail converts later).
@@ -1111,6 +1112,7 @@ export default function Shop() {
   const openAddItem = useNavStore((s) => s.openAddItem);
   const openAskPilot = useNavStore((s) => s.openAskPilot);
   const openInbox = useNavStore((s) => s.openInbox);
+  const openCheckout = useNavStore((s) => s.openCheckout);
 
   const [mode, setMode] = useState<Mode>('plan');
   const [items, setItems] = useState<GroceryItem[]>(mock.grocery);
@@ -1496,7 +1498,7 @@ export default function Shop() {
             variant="primary"
             icon="cart"
             style={{ marginTop: 16 }}
-            onClick={() => pushToast('Checkout opens in a later update')}
+            onClick={openCheckout}
           >
             Check out · ${totalOpen.toFixed(2)}
           </Button>

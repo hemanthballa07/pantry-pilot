@@ -7,7 +7,7 @@ import { mock } from '@/data/mock';
 
 const recipe = mock.recipes[0];
 
-beforeEach(() => useNavStore.setState({ recipeId: null }));
+beforeEach(() => useNavStore.setState({ recipeId: null, checkoutOpen: false }));
 
 describe('Overlays', () => {
   it('renders no drawer when no overlay is open in the store', () => {
@@ -27,5 +27,19 @@ describe('Overlays', () => {
     render(<Overlays />);
     await userEvent.click(await screen.findByLabelText('Close recipe'));
     expect(useNavStore.getState().recipeId).toBeNull();
+  });
+
+  it('renders the checkout overlay when checkoutOpen is set in the store', async () => {
+    useNavStore.setState({ checkoutOpen: true });
+    render(<Overlays />);
+    // Lazy code-split — await the chunk resolving.
+    expect(await screen.findByRole('dialog', { name: /checkout/i })).toBeInTheDocument();
+  });
+
+  it('closing the checkout overlay clears the store', async () => {
+    useNavStore.setState({ checkoutOpen: true });
+    render(<Overlays />);
+    await userEvent.click(await screen.findByLabelText('Close checkout'));
+    expect(useNavStore.getState().checkoutOpen).toBe(false);
   });
 });
