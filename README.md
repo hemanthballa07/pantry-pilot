@@ -2,7 +2,9 @@
 
 A smart-kitchen command center — an AI assistant that watches your pantry, expiry dates, budget, and habits, and proactively helps you cook what you have, waste less, and shop smarter.
 
-> **Stage:** Phase 5 — production migration. Vite + React 18 + TypeScript (strict), React Router v7, Zustand. All 11 screens are native TypeScript; the original prototype is quarantined under `legacy/`.
+**[Live demo ↗](https://project-33nu9.vercel.app)** &nbsp;·&nbsp; [![CI](https://github.com/hemanthballa07/pantry-pilot/actions/workflows/ci.yml/badge.svg)](https://github.com/hemanthballa07/pantry-pilot/actions/workflows/ci.yml)
+
+> **Stage:** Phase 5 complete — live on Vercel. Vite + React 18 + TypeScript (strict), React Router v7, Zustand. All 11 screens are native TypeScript; the original prototype is quarantined under `legacy/`.
 
 ## Quickstart
 
@@ -43,7 +45,7 @@ npm run dev      # Vite dev server at http://127.0.0.1:5173
 | Phase | Scope | |
 |-------|-------|---|
 | 0–4 | Docs → Vite/TS scaffold → typed data → UI modules → all 16 screens converted (Router v7 + Zustand) | ✅ |
-| 5 | Route-split + bundle budget · Vitest/RTL/ESLint/Prettier/Playwright · shell chrome + search · CI + Vercel | ✅ in progress |
+| 5 | Route-split + bundle budget · Vitest/RTL/ESLint/Prettier/Playwright · shell chrome + search · CI + Vercel | ✅ |
 | 6 | Deferred overlays (recipe detail, cook mode, capture/scan, reels, checkout) | — |
 
 ## License
