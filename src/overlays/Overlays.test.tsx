@@ -7,7 +7,7 @@ import { mock } from '@/data/mock';
 
 const recipe = mock.recipes[0];
 
-beforeEach(() => useNavStore.setState({ recipeId: null, checkoutOpen: false }));
+beforeEach(() => useNavStore.setState({ recipeId: null, checkoutOpen: false, captureKind: null }));
 
 describe('Overlays', () => {
   it('renders no drawer when no overlay is open in the store', () => {
@@ -41,5 +41,18 @@ describe('Overlays', () => {
     render(<Overlays />);
     await userEvent.click(await screen.findByLabelText('Close checkout'));
     expect(useNavStore.getState().checkoutOpen).toBe(false);
+  });
+
+  it('renders the capture overlay for the active captureKind', async () => {
+    useNavStore.setState({ captureKind: 'barcode' });
+    render(<Overlays />);
+    expect(await screen.findByRole('dialog', { name: /scan barcode/i })).toBeInTheDocument();
+  });
+
+  it('closing the capture overlay clears the capture kind', async () => {
+    useNavStore.setState({ captureKind: 'receipt' });
+    render(<Overlays />);
+    await userEvent.click(await screen.findByLabelText('Close capture'));
+    expect(useNavStore.getState().captureKind).toBeNull();
   });
 });

@@ -25,10 +25,12 @@ import { useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { mock } from '@/data/mock';
-import { useToastStore } from '@/stores';
+import { useToastStore, useNavStore } from '@/stores';
+import type { CaptureKind } from '@/stores/nav';
 import type { ActivityEntry } from '@/types';
 
 const fireToast = (msg: string) => useToastStore.getState().push(msg);
+const openCapture = (kind: CaptureKind) => useNavStore.getState().setCapture(kind);
 
 // ─── Icon ─────────────────────────────────────────────────────────────────
 
@@ -2194,9 +2196,17 @@ function RecipeImport() {
 }
 
 export function Imports() {
-  // Capture overlay (receipt/barcode/fridge scanners) is not yet converted —
-  // the method cards give honest placeholder feedback (deviation 2).
-  const methods = [
+  // The method cards open the capture overlay (Phase 6 overlay #4 —
+  // src/overlays/Capture.tsx) via useNavStore.setCapture, keyed on captureKind.
+  const methods: {
+    kind: CaptureKind;
+    icon: string;
+    title: string;
+    desc: string;
+    soft: string;
+    ink: string;
+    meta: string;
+  }[] = [
     {
       kind: 'receipt',
       icon: 'receipt',
@@ -2275,7 +2285,7 @@ export function Imports() {
               display: 'flex',
               flexDirection: 'column',
             }}
-            onClick={() => fireToast('Capture opens in a later update')}
+            onClick={() => openCapture(m.kind)}
           >
             <div
               style={{
@@ -2344,7 +2354,7 @@ export function Imports() {
                   iconRight="arrowRight"
                   onClick={(e) => {
                     e.stopPropagation();
-                    fireToast('Capture opens in a later update');
+                    openCapture(m.kind);
                   }}
                 >
                   Open
