@@ -7,7 +7,16 @@ import { mock } from '@/data/mock';
 
 const recipe = mock.recipes[0];
 
-beforeEach(() => useNavStore.setState({ recipeId: null, checkoutOpen: false, captureKind: null }));
+beforeEach(() =>
+  useNavStore.setState({
+    recipeId: null,
+    checkoutOpen: false,
+    captureKind: null,
+    askPilotOpen: false,
+    addItemOpen: false,
+    inboxOpen: false,
+  }),
+);
 
 describe('Overlays', () => {
   it('renders no drawer when no overlay is open in the store', () => {
@@ -54,5 +63,44 @@ describe('Overlays', () => {
     render(<Overlays />);
     await userEvent.click(await screen.findByLabelText('Close capture'));
     expect(useNavStore.getState().captureKind).toBeNull();
+  });
+
+  it('renders the Ask Pilot overlay when askPilotOpen is set in the store', async () => {
+    useNavStore.setState({ askPilotOpen: true });
+    render(<Overlays />);
+    expect(await screen.findByRole('dialog', { name: /pilot/i })).toBeInTheDocument();
+  });
+
+  it('closing the Ask Pilot overlay clears the store', async () => {
+    useNavStore.setState({ askPilotOpen: true });
+    render(<Overlays />);
+    await userEvent.click(await screen.findByLabelText('Close Pilot'));
+    expect(useNavStore.getState().askPilotOpen).toBe(false);
+  });
+
+  it('renders the Add item overlay when addItemOpen is set in the store', async () => {
+    useNavStore.setState({ addItemOpen: true });
+    render(<Overlays />);
+    expect(await screen.findByRole('dialog', { name: /add item/i })).toBeInTheDocument();
+  });
+
+  it('closing the Add item overlay clears the store', async () => {
+    useNavStore.setState({ addItemOpen: true });
+    render(<Overlays />);
+    await userEvent.click(await screen.findByLabelText('Close add item'));
+    expect(useNavStore.getState().addItemOpen).toBe(false);
+  });
+
+  it('renders the Kitchen Inbox overlay when inboxOpen is set in the store', async () => {
+    useNavStore.setState({ inboxOpen: true });
+    render(<Overlays />);
+    expect(await screen.findByRole('dialog', { name: /kitchen inbox/i })).toBeInTheDocument();
+  });
+
+  it('closing the Kitchen Inbox overlay clears the store', async () => {
+    useNavStore.setState({ inboxOpen: true });
+    render(<Overlays />);
+    await userEvent.click(await screen.findByLabelText('Close inbox'));
+    expect(useNavStore.getState().inboxOpen).toBe(false);
   });
 });

@@ -17,6 +17,9 @@ const RecipeDetail = lazy(() =>
 const CookMode = lazy(() => import('./CookMode').then((m) => ({ default: m.CookMode })));
 const Checkout = lazy(() => import('./Checkout').then((m) => ({ default: m.Checkout })));
 const Capture = lazy(() => import('./Capture').then((m) => ({ default: m.Capture })));
+const AskPilot = lazy(() => import('./AskPilot').then((m) => ({ default: m.AskPilot })));
+const AddItem = lazy(() => import('./AddItem').then((m) => ({ default: m.AddItem })));
+const Inbox = lazy(() => import('./Inbox').then((m) => ({ default: m.Inbox })));
 
 export function Overlays() {
   const recipeId = useNavStore((s) => s.recipeId);
@@ -27,6 +30,12 @@ export function Overlays() {
   const closeCheckout = useNavStore((s) => s.closeCheckout);
   const captureKind = useNavStore((s) => s.captureKind);
   const setCapture = useNavStore((s) => s.setCapture);
+  const askPilotOpen = useNavStore((s) => s.askPilotOpen);
+  const closeAskPilot = useNavStore((s) => s.closeAskPilot);
+  const addItemOpen = useNavStore((s) => s.addItemOpen);
+  const closeAddItem = useNavStore((s) => s.closeAddItem);
+  const inboxOpen = useNavStore((s) => s.inboxOpen);
+  const closeInbox = useNavStore((s) => s.closeInbox);
 
   return (
     <Suspense fallback={null}>
@@ -34,6 +43,9 @@ export function Overlays() {
       {cookId && <CookMode recipeId={cookId} onExit={closeCook} />}
       {checkoutOpen && <Checkout onClose={closeCheckout} />}
       {captureKind && <Capture kind={captureKind} onClose={() => setCapture(null)} />}
+      {askPilotOpen && <AskPilot onClose={closeAskPilot} />}
+      {addItemOpen && <AddItem onClose={closeAddItem} />}
+      {inboxOpen && <Inbox onClose={closeInbox} />}
     </Suspense>
   );
 }
