@@ -14,13 +14,21 @@ const Pantry = lazy(() => import('@/screens/Pantry'));
 const Shop = lazy(() => import('@/screens/Shop'));
 const Plan = lazy(() => import('@/screens/Plan'));
 const Cook = lazy(() => import('@/screens/Cook'));
-// The Extras quartet are named exports from one module; React.lazy needs a
-// default, so each adapts its named export. All four resolve the same Extras
-// chunk (finer splitting stays deferred — OQ-002 / ADR-004).
-const Insights = lazy(() => import('@/screens/Extras').then((m) => ({ default: m.Insights })));
-const Household = lazy(() => import('@/screens/Extras').then((m) => ({ default: m.Household })));
-const Settings = lazy(() => import('@/screens/Extras').then((m) => ({ default: m.Settings })));
-const Imports = lazy(() => import('@/screens/Extras').then((m) => ({ default: m.Imports })));
+// The Extras quartet were split into their own modules under src/screens/extras/*
+// (OQ-004 / ADR-004). Each is a named export adapted to the default React.lazy needs,
+// and now resolves its own chunk (shared primitives live in extras/shared.tsx).
+const Insights = lazy(() =>
+  import('@/screens/extras/Insights').then((m) => ({ default: m.Insights })),
+);
+const Household = lazy(() =>
+  import('@/screens/extras/Household').then((m) => ({ default: m.Household })),
+);
+const Settings = lazy(() =>
+  import('@/screens/extras/Settings').then((m) => ({ default: m.Settings })),
+);
+const Imports = lazy(() =>
+  import('@/screens/extras/Imports').then((m) => ({ default: m.Imports })),
+);
 
 function NotFound() {
   const navigate = useNavigate();
