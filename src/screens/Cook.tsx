@@ -19,65 +19,17 @@
 //   5. The legacy toast `{ icon }` option is dropped (store derives glyph from tone).
 
 import { useState, useMemo } from 'react';
-import type { CSSProperties, ReactNode, MouseEventHandler } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { mock } from '@/data/mock';
 import { useToastStore, useNavStore, useSearchStore } from '@/stores';
 import type { Recipe, Diet, Cuisine } from '@/types';
 import { CookReels } from './CookReels';
+import { Icon, Pill, Button } from '@/components/ui';
 
 // Non-reactive store access for event handlers (no subscription needed — the
 // screen never renders the toast/inbox itself; their hosts subscribe separately).
 const fireToast = (msg: string) => useToastStore.getState().push(msg);
 const openInbox = () => useNavStore.getState().openInbox();
-
-// ─── Icon ─────────────────────────────────────────────────────────────────
-
-const ICON_PATHS: Record<string, string> = {
-  sparkles:
-    'M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z M6 2l.8 2.2L9 5l-2.2.8L6 8l-.8-2.2L3 5l2.2-.8z M17 16l.6 1.8L19.4 18l-1.8.6L17 20.4l-.6-1.8L14.6 18l1.8-.6z',
-  alert:
-    'M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z',
-  timer: 'M12 6a8 8 0 110 16 8 8 0 010-16z M10 2h4 M12 10v4',
-  wallet:
-    'M2 7a2 2 0 012-2h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7zm14 5a1 1 0 110-2 1 1 0 010 2z',
-  flame: 'M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 1-5s-2-3-2-3 4 0 6-2z',
-  fire: 'M12 2c0 4 5 5 5 11a5 5 0 0 1-10 0c0-1 1-3 2-4-1 4 3 4 3 4-2-3 0-7 0-11z',
-  arrowRight: 'M5 12h14M13 5l7 7-7 7',
-  cart: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM16 10a4 4 0 01-8 0',
-  plus: 'M12 5v14M5 12h14',
-  bookmark: 'M6 3h12v18l-6-4-6 4z',
-  upload: 'M12 16V4M5 11l7-7 7 7 M3 20h18',
-  edit: 'M14 4l6 6L9 21H3v-6z',
-  heart: 'M12 21s-7-4.5-9-9c-1.5-3 1-7 5-7 2 0 3 1 4 2 1-1 2-2 4-2 4 0 6.5 4 5 7-2 4.5-9 9-9 9z',
-  leaf: 'M17 8C8 10 5.9 16.17 3.82 22 8 22 12 21 14 18c2-3 0-7-3-7s-5 3-3 7',
-  save: 'M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2zM17 21v-8H7v8M7 3v5h8',
-  snowflake: 'M12 2v20 M2 12h20 M5 5l14 14 M19 5L5 19',
-  // bag → folded two-path (bag body + handle arc) into one stroked `d`
-  bag: 'M6 7h12l-1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z M9 7a3 3 0 1 1 6 0',
-};
-
-interface IconProps {
-  name: string;
-  size?: number;
-  stroke?: string;
-}
-function Icon({ name, size = 18, stroke = 'currentColor' }: IconProps) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={stroke}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ flexShrink: 0 }}
-    >
-      <path d={ICON_PATHS[name] ?? ''} />
-    </svg>
-  );
-}
 
 // ─── Illo ─────────────────────────────────────────────────────────────────
 
@@ -162,165 +114,6 @@ function Card({ pad = 20, style, children, onClick }: CardProps) {
     >
       {children}
     </div>
-  );
-}
-
-// ─── Pill ─────────────────────────────────────────────────────────────────
-
-type PillTone = 'green' | 'orange' | 'tomato' | 'amber' | 'sky' | 'ink' | 'neutral' | 'ghost';
-
-interface PillProps {
-  tone?: PillTone;
-  size?: 'sm' | 'md';
-  children?: ReactNode;
-  dot?: boolean;
-  icon?: string;
-}
-
-const PILL_STYLES: Record<PillTone, { bg: string; color: string; border: string }> = {
-  green: {
-    bg: 'var(--green-tint, #eef7ee)',
-    color: 'var(--green-deep, #2a5a2a)',
-    border: 'var(--green-soft, rgba(59,110,61,.2))',
-  },
-  orange: {
-    bg: 'var(--orange-tint, #fff3e8)',
-    color: 'var(--orange-deep, #b05a10)',
-    border: 'rgba(176,90,16,.2)',
-  },
-  tomato: {
-    bg: 'var(--tomato-soft, #fff0ee)',
-    color: 'var(--tomato-ink, #b02020)',
-    border: 'var(--tomato-line, rgba(176,32,32,.2))',
-  },
-  amber: {
-    bg: 'var(--amber-soft, #fff8e8)',
-    color: 'var(--amber-ink, #9a6a00)',
-    border: 'var(--amber-line, rgba(154,106,0,.2))',
-  },
-  sky: {
-    bg: 'var(--sky-soft, #d9e4ec)',
-    color: 'var(--sky-ink, #1f3b52)',
-    border: 'var(--sky, #3a5f7a)',
-  },
-  ink: {
-    bg: 'var(--ink, #1a1814)',
-    color: 'var(--paper-warm, #fdfaf3)',
-    border: 'var(--ink, #1a1814)',
-  },
-  neutral: { bg: 'rgba(0,0,0,.05)', color: 'var(--ink-muted, #8a8374)', border: 'transparent' },
-  ghost: { bg: 'rgba(0,0,0,.04)', color: 'var(--ink-muted, #8a8374)', border: 'transparent' },
-};
-
-function Pill({ tone = 'neutral', size = 'sm', children, dot, icon }: PillProps) {
-  const s = PILL_STYLES[tone];
-  const pad = size === 'md' ? '4px 10px' : '3px 8px';
-  const fs = size === 'md' ? 12 : 11;
-  return (
-    <div
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 5,
-        padding: pad,
-        fontSize: fs,
-        fontWeight: 700,
-        background: s.bg,
-        color: s.color,
-        border: `1px solid ${s.border}`,
-        borderRadius: 999,
-        whiteSpace: 'nowrap',
-        flexShrink: 0,
-      }}
-    >
-      {dot && (
-        <span
-          style={{
-            width: 5,
-            height: 5,
-            borderRadius: 999,
-            background: 'currentColor',
-            flexShrink: 0,
-          }}
-        />
-      )}
-      {icon && <Icon name={icon} size={11} />}
-      {children}
-    </div>
-  );
-}
-
-// ─── Button ───────────────────────────────────────────────────────────────
-
-interface ButtonProps {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'soft' | 'orange';
-  size?: 'sm';
-  icon?: string;
-  iconRight?: string;
-  full?: boolean;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-  style?: CSSProperties;
-  children?: ReactNode;
-}
-
-const BTN_STYLES: Record<string, { bg: string; fg: string; bd: string }> = {
-  primary: { bg: 'var(--ink, #1a1814)', fg: 'var(--paper-warm, #fdfaf3)', bd: 'none' },
-  secondary: {
-    bg: 'var(--paper-warm, #fdfaf3)',
-    fg: 'var(--ink, #1a1814)',
-    bd: '1px solid var(--line, rgba(0,0,0,.12))',
-  },
-  ghost: {
-    bg: 'transparent',
-    fg: 'var(--ink-2, #4a4535)',
-    bd: '1px solid var(--line, rgba(0,0,0,.12))',
-  },
-  soft: {
-    bg: 'var(--paper-warm, #fdfaf3)',
-    fg: 'var(--ink-2, #4a4535)',
-    bd: '1px solid var(--line-soft, rgba(0,0,0,.06))',
-  },
-  orange: { bg: 'var(--orange, #D9722B)', fg: '#FDFAF3', bd: 'none' },
-};
-
-function Button({
-  variant = 'primary',
-  size,
-  icon,
-  iconRight,
-  full,
-  onClick,
-  style,
-  children,
-}: ButtonProps) {
-  const s = BTN_STYLES[variant] ?? BTN_STYLES.primary;
-  const pad = size === 'sm' ? '6px 12px' : '10px 18px';
-  const fs = size === 'sm' ? 12 : 14;
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 7,
-        padding: pad,
-        fontSize: fs,
-        fontWeight: 600,
-        background: s.bg,
-        color: s.fg,
-        border: s.bd,
-        borderRadius: 10,
-        cursor: 'pointer',
-        fontFamily: 'inherit',
-        width: full ? '100%' : undefined,
-        ...style,
-      }}
-    >
-      {icon && <Icon name={icon} size={size === 'sm' ? 12 : 14} />}
-      {children}
-      {iconRight && <Icon name={iconRight} size={size === 'sm' ? 12 : 14} />}
-    </button>
   );
 }
 

@@ -7,74 +7,17 @@
 // InventoryView defaults it to '' (filter is a no-op until then).
 
 import { useState, useMemo } from 'react';
-import type { CSSProperties, ReactNode, MouseEventHandler } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { mock } from '@/data/mock';
 import { useToastStore, useNavStore, useSearchStore } from '@/stores';
+import { Icon, Pill, Button, type PillTone } from '@/components/ui';
 
 // ─── Derived types ──────────────────────────────────────────────────────────
 
 type Item = (typeof mock.items)[number];
 type Leftover = (typeof mock.leftovers)[number];
 type RestockRule = (typeof mock.autoRestockRules)[number];
-
-// ─── Icon ─────────────────────────────────────────────────────────────────
-
-const ICON_PATHS: Record<string, string> = {
-  sparkles:
-    'M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z M6 2l.8 2.2L9 5l-2.2.8L6 8l-.8-2.2L3 5l2.2-.8z M17 16l.6 1.8L19.4 18l-1.8.6L17 20.4l-.6-1.8L14.6 18l1.8-.6z',
-  check: 'M20 6L9 17l-5-5',
-  chevronRight: 'M9 18l6-6-6-6',
-  alert:
-    'M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z',
-  wallet:
-    'M2 7a2 2 0 012-2h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7zm14 5a1 1 0 110-2 1 1 0 010 2z',
-  leaf: 'M17 8C8 10 5.9 16.17 3.82 22 8 22 12 21 14 18c2-3 0-7-3-7s-5 3-3 7',
-  chef: 'M6 13a6 6 0 0112 0v3H6v-3zM9 16v2a3 3 0 006 0v-2',
-  cart: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM16 10a4 4 0 01-8 0',
-  save: 'M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2zM17 21v-8H7v8M7 3v5h8',
-  plus: 'M12 5v14M5 12h14',
-  // Pantry-specific glyphs (single-path, Dashboard-style)
-  pantry:
-    'M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z M3 9h18 M3 15h18 M9 3v18 M15 3v18',
-  info: 'M12 21a9 9 0 110-18 9 9 0 010 18z M12 16v-4 M12 8h.01',
-  receipt: 'M6 2h12v19l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3V2z M9 7h6 M9 11h6 M9 15h4',
-  grid: 'M4 4h7v7H4z M13 4h7v7h-7z M4 13h7v7H4z M13 13h7v7h-7z',
-  fridge:
-    'M6 2h12a1 1 0 011 1v18a1 1 0 01-1 1H6a1 1 0 01-1-1V3a1 1 0 011-1z M5 10h14 M8 6v1 M8 13v3',
-  list: 'M8 6h13 M8 12h13 M8 18h13 M3 6h.01 M3 12h.01 M3 18h.01',
-  snowflake: 'M12 2v20 M2 12h20 M5 5l14 14 M19 5L5 19',
-  calendar:
-    'M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z M3 11h18 M8 3v4 M16 3v4',
-  trash:
-    'M3 6h18 M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2 M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6 M10 11v6 M14 11v6',
-  timer: 'M12 6a8 8 0 110 16 8 8 0 010-16z M10 2h4 M12 10v4',
-  heart: 'M12 21s-7-4.5-9-9c-1.5-3 1-7 5-7 2 0 3 1 4 2 1-1 2-2 4-2 4 0 6.5 4 5 7-2 4.5-9 9-9 9z',
-  clock: 'M12 3a9 9 0 100 18 9 9 0 000-18z M12 7v5l3 2',
-};
-
-interface IconProps {
-  name: string;
-  size?: number;
-  stroke?: string;
-}
-function Icon({ name, size = 18, stroke = 'currentColor' }: IconProps) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={stroke}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ flexShrink: 0 }}
-    >
-      <path d={ICON_PATHS[name] ?? ''} />
-    </svg>
-  );
-}
 
 // ─── Illo ─────────────────────────────────────────────────────────────────
 
@@ -152,91 +95,6 @@ function Card({ pad = 20, style, children, onClick }: CardProps) {
         ...style,
       }}
     >
-      {children}
-    </div>
-  );
-}
-
-// ─── Pill ─────────────────────────────────────────────────────────────────
-
-type PillTone = 'green' | 'orange' | 'tomato' | 'amber' | 'sky' | 'ink' | 'neutral' | 'ghost';
-
-interface PillProps {
-  tone?: PillTone;
-  size?: 'sm' | 'md';
-  children?: ReactNode;
-  dot?: boolean;
-  icon?: string;
-}
-
-const PILL_STYLES: Record<PillTone, { bg: string; color: string; border: string }> = {
-  green: {
-    bg: 'var(--green-tint, #eef7ee)',
-    color: 'var(--green-deep, #2a5a2a)',
-    border: 'var(--green-soft, rgba(59,110,61,.2))',
-  },
-  orange: {
-    bg: 'var(--orange-tint, #fff3e8)',
-    color: 'var(--orange-deep, #b05a10)',
-    border: 'rgba(176,90,16,.2)',
-  },
-  tomato: {
-    bg: 'var(--tomato-soft, #fff0ee)',
-    color: 'var(--tomato-ink, #b02020)',
-    border: 'var(--tomato-line, rgba(176,32,32,.2))',
-  },
-  amber: {
-    bg: 'var(--amber-soft, #fff8e8)',
-    color: 'var(--amber-ink, #9a6a00)',
-    border: 'var(--amber-line, rgba(154,106,0,.2))',
-  },
-  sky: {
-    bg: 'var(--sky-soft, #d9e4ec)',
-    color: 'var(--sky-ink, #1f3b52)',
-    border: 'var(--sky, #3a5f7a)',
-  },
-  ink: {
-    bg: 'var(--ink, #1a1814)',
-    color: 'var(--paper-warm, #fdfaf3)',
-    border: 'var(--ink, #1a1814)',
-  },
-  neutral: { bg: 'rgba(0,0,0,.05)', color: 'var(--ink-muted, #8a8374)', border: 'transparent' },
-  ghost: { bg: 'rgba(0,0,0,.04)', color: 'var(--ink-muted, #8a8374)', border: 'transparent' },
-};
-
-function Pill({ tone = 'neutral', size = 'sm', children, dot, icon }: PillProps) {
-  const s = PILL_STYLES[tone];
-  const pad = size === 'md' ? '4px 10px' : '3px 8px';
-  const fs = size === 'md' ? 12 : 11;
-  return (
-    <div
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 5,
-        padding: pad,
-        fontSize: fs,
-        fontWeight: 700,
-        background: s.bg,
-        color: s.color,
-        border: `1px solid ${s.border}`,
-        borderRadius: 999,
-        whiteSpace: 'nowrap',
-        flexShrink: 0,
-      }}
-    >
-      {dot && (
-        <span
-          style={{
-            width: 5,
-            height: 5,
-            borderRadius: 999,
-            background: 'currentColor',
-            flexShrink: 0,
-          }}
-        />
-      )}
-      {icon && <Icon name={icon} size={11} />}
       {children}
     </div>
   );
@@ -368,79 +226,6 @@ function Ring({
         </div>
       )}
     </div>
-  );
-}
-
-// ─── Button ───────────────────────────────────────────────────────────────
-
-interface ButtonProps {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'soft';
-  size?: 'sm';
-  icon?: string;
-  iconRight?: string;
-  full?: boolean;
-  onClick?: MouseEventHandler<HTMLButtonElement>;
-  style?: CSSProperties;
-  children?: ReactNode;
-}
-
-const BTN_STYLES: Record<string, { bg: string; fg: string; bd: string }> = {
-  primary: { bg: 'var(--ink, #1a1814)', fg: 'var(--paper-warm, #fdfaf3)', bd: 'none' },
-  secondary: {
-    bg: 'var(--paper-warm, #fdfaf3)',
-    fg: 'var(--ink, #1a1814)',
-    bd: '1px solid var(--line, rgba(0,0,0,.12))',
-  },
-  ghost: {
-    bg: 'transparent',
-    fg: 'var(--ink-2, #4a4535)',
-    bd: '1px solid var(--line, rgba(0,0,0,.12))',
-  },
-  soft: {
-    bg: 'var(--paper-warm, #fdfaf3)',
-    fg: 'var(--ink-2, #4a4535)',
-    bd: '1px solid var(--line-soft, rgba(0,0,0,.06))',
-  },
-};
-
-function Button({
-  variant = 'primary',
-  size,
-  icon,
-  iconRight,
-  full,
-  onClick,
-  style,
-  children,
-}: ButtonProps) {
-  const s = BTN_STYLES[variant] ?? BTN_STYLES.primary;
-  const pad = size === 'sm' ? '6px 12px' : '10px 18px';
-  const fs = size === 'sm' ? 12 : 14;
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 7,
-        padding: pad,
-        fontSize: fs,
-        fontWeight: 600,
-        background: s.bg,
-        color: s.fg,
-        border: s.bd,
-        borderRadius: 10,
-        cursor: 'pointer',
-        fontFamily: 'inherit',
-        width: full ? '100%' : undefined,
-        ...style,
-      }}
-    >
-      {icon && <Icon name={icon} size={size === 'sm' ? 12 : 14} />}
-      {children}
-      {iconRight && <Icon name={iconRight} size={size === 'sm' ? 12 : 14} />}
-    </button>
   );
 }
 
