@@ -21,3 +21,20 @@ jobs:
       - run: npm run build:check
       - run: npx playwright install --with-deps chromium
       - run: npm run e2e
+
+  visual:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.60.0-jammy # browsers preinstalled; keep == @playwright/test version
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npx playwright install chromium # idempotent; guarantees npm-installed Playwright finds a matching browser
+      - run: npm run vrt # compares committed linux baselines; same image+arch as local vrt:docker
+      - if: always() # on a visual diff, upload actual/expected/diff PNGs so failures are triageable
+        uses: actions/upload-artifact@v4
+        with:
+          name: vrt-diffs
+          path: test-results/
+          if-no-files-found: ignore
+          retention-days: 7

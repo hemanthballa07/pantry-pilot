@@ -1,23 +1,10 @@
 import { test, expect } from '@playwright/test';
+import { ROUTES } from './routes';
 
 // Every route must code-split cleanly: its lazy chunk resolves through the
 // Suspense boundary into real content, with no app console errors. Mirrors the
 // WS1 headless smoke; baseURL + preview server come from playwright.config.ts.
-const routes = [
-  { path: '/', label: 'Landing' },
-  { path: '/dashboard', label: 'Dashboard' },
-  { path: '/pantry', label: 'Pantry' },
-  { path: '/cook', label: 'Cook' },
-  { path: '/plan', label: 'Plan' },
-  { path: '/shop', label: 'Shop' },
-  { path: '/health', label: 'Health' },
-  { path: '/insights', label: 'Insights' },
-  { path: '/household', label: 'Household' },
-  { path: '/settings', label: 'Settings' },
-  { path: '/imports', label: 'Imports' },
-];
-
-for (const { path, label } of routes) {
+for (const { path, label } of ROUTES) {
   test(`${path} (${label}) resolves its lazy chunk and renders without console errors`, async ({
     page,
   }) => {

@@ -16,7 +16,9 @@
     "lint": "eslint .",
     "format": "prettier --write \"src/**/*.{ts,tsx}\" \"e2e/**/*.ts\" \"scripts/**/*.mjs\" \"*.{ts,mjs}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx}\" \"e2e/**/*.ts\" \"scripts/**/*.mjs\" \"*.{ts,mjs}\"",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "vrt": "playwright test --config playwright.vrt.config.ts",
+    "vrt:docker": "bash scripts/vrt-docker.sh"
   },
   "dependencies": {
     "react": "^18.3.1",

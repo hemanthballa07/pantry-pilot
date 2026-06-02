@@ -613,7 +613,10 @@ function CookHeatmap() {
   const colors = ['var(--line-soft)', '#D2DFB6', '#A8C68A', '#6B8E4E', 'var(--green-deep)'];
   return (
     <div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 3 }}>
+      <div
+        data-testid="cook-heatmap"
+        style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 3 }}
+      >
         {Array.from({ length: 12 }, (_, w) => (
           <div key={w} style={{ display: 'grid', gridTemplateRows: 'repeat(7, 1fr)', gap: 3 }}>
             {Array.from({ length: 7 }, (_, d) => (
