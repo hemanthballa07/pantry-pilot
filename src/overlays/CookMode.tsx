@@ -4,7 +4,8 @@
 // is the React shell. Rendered full-screen (position:fixed, z-index 70) by the
 // <Overlays> host, not a Drawer. Toasts go through the store; primitives are
 // inlined per the per-file convention, Illo is shared.
-import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useFocusTrap } from '@/components/useFocusTrap';
 import { mock } from '@/data/mock';
 import { useToastStore } from '@/stores';
 import { Illo } from '@/components/Illo';
@@ -558,6 +559,9 @@ function CookSetup({
   onStart: () => void;
   onExit: () => void;
 }) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(rootRef, true);
+
   const pantryNote = useMemo(() => {
     const missing = recipe.missing;
     if (missing.length === 0) {
@@ -587,6 +591,8 @@ function CookSetup({
 
   return (
     <div
+      ref={rootRef}
+      tabIndex={-1}
       role="dialog"
       aria-modal="true"
       aria-label={recipe.name}
@@ -1045,6 +1051,9 @@ function CookFlow({
   onExit: () => void;
   onFinish: () => void;
 }) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(rootRef, true);
+
   const [step, setStep] = useState(0);
   const [checked, setChecked] = useState<Set<string>>(() => new Set());
   const [timer, setTimer] = useState(0);
@@ -1095,6 +1104,8 @@ function CookFlow({
 
   return (
     <div
+      ref={rootRef}
+      tabIndex={-1}
       role="dialog"
       aria-modal="true"
       aria-label={recipe.name}
@@ -1699,6 +1710,9 @@ function CookSummary({
   ingredients: ScaledIngredient[];
   onDone: () => void;
 }) {
+  const rootRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(rootRef, true);
+
   const used = useMemo(
     () =>
       ingredients.map((it) => {
@@ -1731,6 +1745,8 @@ function CookSummary({
 
   return (
     <div
+      ref={rootRef}
+      tabIndex={-1}
       role="dialog"
       aria-modal="true"
       aria-label={recipe.name}

@@ -35,6 +35,31 @@ describe('CookMode phase machine', () => {
     expect(screen.getByRole('dialog', { name: /schezwan egg fried rice/i })).toBeInTheDocument();
   });
 
+  it('moves focus into the cook dialog on open (OQ-012)', () => {
+    renderCook();
+    expect(screen.getByRole('dialog', { name: /schezwan egg fried rice/i })).toBe(
+      document.activeElement,
+    );
+  });
+
+  it('restores focus to the opener after walking every phase and closing (OQ-012)', async () => {
+    const trigger = document.createElement('button');
+    document.body.appendChild(trigger);
+    trigger.focus();
+    const { unmount } = render(<CookMode recipeId="r1" onExit={() => {}} />);
+    // setup → cook → … → summary, exercising a focus trap on each phase root.
+    await userEvent.click(screen.getByRole('button', { name: /start cooking/i }));
+    while (screen.queryByRole('button', { name: /next step/i })) {
+      await userEvent.click(screen.getByRole('button', { name: /next step/i }));
+    }
+    await userEvent.click(screen.getByRole('button', { name: /finish cooking/i }));
+    expect(screen.getByText(/cook complete/i)).toBeInTheDocument();
+    // Closing the overlay returns focus all the way back to the element that opened it.
+    unmount();
+    expect(document.activeElement).toBe(trigger);
+    trigger.remove();
+  });
+
   it('locks body scroll while open and restores it on unmount', () => {
     const { unmount } = renderCook();
     expect(document.body.style.overflow).toBe('hidden');

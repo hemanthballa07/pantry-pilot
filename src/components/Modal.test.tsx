@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Modal } from './Modal';
 
@@ -106,5 +106,18 @@ describe('Modal', () => {
     );
     expect(document.activeElement).toBe(trigger);
     trigger.remove();
+  });
+
+  it('traps Tab focus inside the modal, wrapping at the end (OQ-012)', () => {
+    render(
+      <Modal open onClose={() => {}}>
+        <button>alpha</button>
+        <button>omega</button>
+      </Modal>,
+    );
+    const [alpha, omega] = screen.getAllByRole('button');
+    omega.focus();
+    fireEvent.keyDown(omega, { key: 'Tab' });
+    expect(document.activeElement).toBe(alpha);
   });
 });
