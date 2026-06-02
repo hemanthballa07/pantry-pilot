@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react';
+import { useFocusTrap } from './useFocusTrap';
 
 interface ModalProps {
   open: boolean;
@@ -20,16 +21,16 @@ interface ModalProps {
 // centering container (as the legacy checkout.jsx did) — this keeps the ppPop
 // scale animation free of styles.css's .pp-modal transform-centering, which would
 // otherwise fight the keyframe. A stopPropagation on the panel means only true
-// backdrop clicks dismiss. Full focus-trap is still deferred (OQ-012).
+// backdrop clicks dismiss. Focus-in, Tab/Shift+Tab containment, and focus-restore
+// come from the shared useFocusTrap hook (OQ-012); this effect owns scroll-lock + Escape.
 export function Modal({ open, onClose, children, width = 480, label }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(panelRef, open);
 
   useEffect(() => {
     if (!open) return;
-    const previouslyFocused = document.activeElement as HTMLElement | null;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    panelRef.current?.focus();
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -38,7 +39,6 @@ export function Modal({ open, onClose, children, width = 480, label }: ModalProp
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = prevOverflow;
-      previouslyFocused?.focus?.();
     };
   }, [open, onClose]);
 

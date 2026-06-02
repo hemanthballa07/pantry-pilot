@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Drawer } from './Drawer';
 
@@ -95,5 +95,18 @@ describe('Drawer', () => {
     );
     expect(document.activeElement).toBe(trigger);
     trigger.remove();
+  });
+
+  it('traps Tab focus inside the drawer, wrapping at the end (OQ-012)', () => {
+    render(
+      <Drawer open onClose={() => {}}>
+        <button>alpha</button>
+        <button>omega</button>
+      </Drawer>,
+    );
+    const [alpha, omega] = screen.getAllByRole('button');
+    omega.focus();
+    fireEvent.keyDown(omega, { key: 'Tab' });
+    expect(document.activeElement).toBe(alpha);
   });
 });

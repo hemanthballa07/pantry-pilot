@@ -1,4 +1,5 @@
 import { useEffect, useRef, type ReactNode } from 'react';
+import { useFocusTrap } from './useFocusTrap';
 
 interface DrawerProps {
   open: boolean;
@@ -13,17 +14,18 @@ interface DrawerProps {
 // Slides in from the right over a click-to-dismiss backdrop; Escape closes.
 // Uses the styles.css .pp-overlay / .pp-drawer tokens verbatim. Mounted above
 // the shell chrome (RootLayout), so its position:fixed anchors to the viewport.
-// On open it moves focus into the panel, locks body scroll, and on close
-// restores both — the modal baseline every Phase 6 overlay inherits.
+// On open it traps keyboard focus inside the panel and locks body scroll; on
+// close it restores both — the modal baseline every Phase 6 overlay inherits.
+// Focus-in, Tab/Shift+Tab containment, and focus-restore live in the shared
+// useFocusTrap hook (OQ-012); this effect owns only scroll-lock + Escape.
 export function Drawer({ open, onClose, children, width = 480, label }: DrawerProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(panelRef, open);
 
   useEffect(() => {
     if (!open) return;
-    const previouslyFocused = document.activeElement as HTMLElement | null;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-    panelRef.current?.focus();
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
@@ -32,7 +34,6 @@ export function Drawer({ open, onClose, children, width = 480, label }: DrawerPr
     return () => {
       document.removeEventListener('keydown', onKey);
       document.body.style.overflow = prevOverflow;
-      previouslyFocused?.focus?.();
     };
   }, [open, onClose]);
 
