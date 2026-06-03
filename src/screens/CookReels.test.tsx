@@ -13,6 +13,19 @@ describe('CookReels', () => {
     expect(screen.getByText(first.title)).toBeInTheDocument();
   });
 
+  it('exposes the cook-reels test id the visual-regression suite captures', () => {
+    // Locks the selector e2e/visual/overlays.vrt.ts screenshots — if this root
+    // testid is renamed/removed, the VRT loses its reels target silently, so
+    // fail here (unit) rather than in the slow Docker VRT.
+    render(<CookReels onCookNow={() => {}} onOpenRecipe={() => {}} />);
+    const root = screen.getByTestId('cook-reels');
+    expect(root).toBeInTheDocument();
+    // Assert it is the OUTER container (it holds the "Cook Reels" header), not a
+    // shrunken sub-node — so the VRT element-screenshot target can't silently
+    // shrink to a sub-region while this test still passes.
+    expect(root).toContainElement(screen.getByText(/cook reels/i));
+  });
+
   it('"Cook this now" opens cook mode for the reel recipe', async () => {
     const onCookNow = vi.fn();
     render(<CookReels onCookNow={onCookNow} onOpenRecipe={() => {}} />);

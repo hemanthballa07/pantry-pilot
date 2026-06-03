@@ -447,7 +447,7 @@ export function CookReels({
     });
 
   return (
-    <div style={{ padding: '0 28px 8px' }}>
+    <div data-testid="cook-reels" style={{ padding: '0 28px 8px' }}>
       <style>{`
         @keyframes ppSteam { 0% { transform: translateY(8px) scale(.8); opacity: 0; }
           30% { opacity: .55; } 100% { transform: translateY(-46px) scale(1.3); opacity: 0; } }
