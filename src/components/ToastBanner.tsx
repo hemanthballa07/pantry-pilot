@@ -14,12 +14,16 @@ export function ToastBanner() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current?.key, dismiss]);
 
-  if (!current) return null;
-
+  // The live region is rendered ALWAYS (not gated on `current`) so screen readers
+  // register it before content arrives — a region inserted with content already
+  // present is not reliably announced (NVDA/older JAWS). When idle it is
+  // visibility:hidden (position:fixed → no layout, no paint, so the VRT is
+  // unaffected) and empty.
   return (
     <div
       role="status"
       aria-live="polite"
+      aria-atomic="true"
       style={{
         position: 'fixed',
         bottom: 24,
@@ -36,9 +40,11 @@ export function ToastBanner() {
         maxWidth: 480,
         textAlign: 'center',
         whiteSpace: 'pre-wrap',
+        visibility: current ? 'visible' : 'hidden',
+        pointerEvents: current ? 'auto' : 'none',
       }}
     >
-      {current.text}
+      {current?.text ?? ''}
     </div>
   );
 }

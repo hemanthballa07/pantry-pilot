@@ -1955,7 +1955,9 @@ function CookSummary({
                 </div>
                 <button
                   onClick={() => setSaveLeftovers((v) => !v)}
-                  aria-label="Toggle saving leftovers"
+                  role="switch"
+                  aria-checked={saveLeftovers}
+                  aria-label="Save leftovers"
                   style={{
                     width: 50,
                     height: 30,

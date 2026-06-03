@@ -151,6 +151,7 @@ export function Inbox({ onClose }: { onClose: () => void }) {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && add()}
+              aria-label="Add a note to your kitchen inbox"
               placeholder="Buy oat milk · try TikTok feta pasta · use spinach…"
               style={{
                 flex: 1,

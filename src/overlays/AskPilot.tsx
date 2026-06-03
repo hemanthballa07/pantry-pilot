@@ -267,6 +267,7 @@ export function AskPilot({ onClose }: { onClose: () => void }) {
                 }
               }}
               placeholder="Ask Pilot something about your kitchen…"
+              aria-label="Ask Pilot a question"
               rows={1}
               style={{
                 flex: 1,

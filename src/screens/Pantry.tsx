@@ -637,6 +637,8 @@ function InventoryView({
               <button
                 key={v.value}
                 onClick={() => setView(v.value)}
+                aria-label={v.label}
+                aria-pressed={view === v.value}
                 title={v.label}
                 style={{
                   width: 28,
@@ -1577,7 +1579,7 @@ function AutoRestockView() {
                   {r.rule}
                 </div>
               </div>
-              <Switch on={r.on} onClick={() => toggle(r.id)} />
+              <Switch on={r.on} onClick={() => toggle(r.id)} label={`Auto-restock ${r.item}`} />
             </div>
             <div
               style={{
@@ -1626,10 +1628,13 @@ function Field({ label, value }: { label: string; value: string }) {
   );
 }
 
-function Switch({ on, onClick }: { on: boolean; onClick: () => void }) {
+function Switch({ on, onClick, label }: { on: boolean; onClick: () => void; label?: string }) {
   return (
     <button
       onClick={onClick}
+      role="switch"
+      aria-checked={on}
+      aria-label={label}
       style={{
         width: 40,
         height: 22,

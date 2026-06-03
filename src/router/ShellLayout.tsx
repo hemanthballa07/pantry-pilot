@@ -88,6 +88,7 @@ function Sidebar({
 }) {
   return (
     <aside
+      aria-label="Sidebar"
       style={{
         width: collapsed ? 64 : 232,
         flex: '0 0 auto',
@@ -137,7 +138,7 @@ function Sidebar({
       </div>
 
       {/* Nav */}
-      <nav style={{ flex: 1, overflowY: 'auto', padding: '14px 8px' }}>
+      <nav aria-label="Main navigation" style={{ flex: 1, overflowY: 'auto', padding: '14px 8px' }}>
         {NAV.map((n) => {
           const isActive = active === n.id;
           return (
@@ -145,6 +146,7 @@ function Sidebar({
               key={n.id}
               onClick={() => onNav(n.id)}
               aria-current={isActive ? 'page' : undefined}
+              aria-label={collapsed ? n.label : undefined}
               title={collapsed ? n.label : undefined}
               style={{
                 display: 'flex',
@@ -213,6 +215,7 @@ function Sidebar({
         {collapsed ? (
           <button
             onClick={onToggle}
+            aria-label="Expand sidebar"
             title="Expand sidebar"
             style={{
               display: 'grid',
@@ -247,6 +250,7 @@ function Sidebar({
             </div>
             <button
               onClick={onToggle}
+              aria-label="Collapse sidebar"
               title="Collapse sidebar"
               style={{
                 background: 'transparent',

@@ -229,6 +229,7 @@ export function AddItem({ onClose }: { onClose: () => void }) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. Spinach"
+          aria-label="Item name"
           autoFocus
           style={inputStyle}
         />
@@ -236,7 +237,12 @@ export function AddItem({ onClose }: { onClose: () => void }) {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginTop: 14 }}>
           <div>
             <Label>Category</Label>
-            <select value={cat} onChange={(e) => setCat(e.target.value)} style={inputStyle}>
+            <select
+              value={cat}
+              onChange={(e) => setCat(e.target.value)}
+              aria-label="Category"
+              style={inputStyle}
+            >
               {CATEGORIES.map((c) => (
                 <option key={c}>{c}</option>
               ))}
@@ -244,7 +250,12 @@ export function AddItem({ onClose }: { onClose: () => void }) {
           </div>
           <div>
             <Label>Location</Label>
-            <select value={loc} onChange={(e) => setLoc(e.target.value)} style={inputStyle}>
+            <select
+              value={loc}
+              onChange={(e) => setLoc(e.target.value)}
+              aria-label="Location"
+              style={inputStyle}
+            >
               {LOCATIONS.map((l) => (
                 <option key={l}>{l}</option>
               ))}
@@ -259,12 +270,13 @@ export function AddItem({ onClose }: { onClose: () => void }) {
               value={qty}
               onChange={(e) => setQty(e.target.value)}
               placeholder="1 bag"
+              aria-label="Quantity"
               style={inputStyle}
             />
           </div>
           <div>
             <Label>Expires</Label>
-            <input placeholder="Pilot will estimate" style={inputStyle} />
+            <input placeholder="Pilot will estimate" aria-label="Expires" style={inputStyle} />
           </div>
         </div>
 
