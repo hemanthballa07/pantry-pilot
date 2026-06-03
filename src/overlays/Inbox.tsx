@@ -6,55 +6,19 @@
 // interface, and the mock array is copied so it is never mutated in place).
 //
 // The quick-capture chips (Snap receipt / Paste URL / Voice note) fire toasts as in the
-// legacy. Primitives (Icon) are inlined per the per-file convention; Drawer comes from the
-// shared components/ layer.
+// legacy. Icon (decorative) + Drawer come from the shared components/ layer.
 import { useState } from 'react';
 import { Drawer } from '@/components/Drawer';
+import { Icon as UiIcon } from '@/components/ui';
 import { mock } from '@/data/mock';
 import { useToastStore } from '@/stores';
 import type { InboxEntry, InboxType } from '@/types';
 
 const fireToast = (msg: string) => useToastStore.getState().push(msg);
 
-// ─── Icon ───────────────────────────────────────────────────────────────────
-const ICON_PATHS: Record<string, string> = {
-  close: 'M6 6l12 12M18 6L6 18',
-  plus: 'M12 5v14M5 12h14',
-  check: 'M4 12l5 5L20 6',
-  info: 'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0 M12 8h.01 M11 12h1v5h1',
-  cart: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM16 10a4 4 0 01-8 0',
-  bookmark: 'M6 3h12v18l-6-4-6 4z',
-  receipt: 'M6 2h12v19l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3V2z M9 7h6 M9 11h6 M9 15h4',
-  upload: 'M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2 M12 15V3 M8 7l4-4 4 4',
-  scan: 'M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2',
-  chef: 'M6 13a6 6 0 0112 0v3H6v-3zM9 16v2a3 3 0 006 0v-2',
-};
-
-function Icon({
-  name,
-  size = 18,
-  stroke = 'currentColor',
-}: {
-  name: string;
-  size?: number;
-  stroke?: string;
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={stroke}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ flexShrink: 0 }}
-      aria-hidden="true"
-    >
-      <path d={ICON_PATHS[name] ?? ''} />
-    </svg>
-  );
+// ─── Icon (OQ-011b: shared components/ui primitive, decorative for the overlay layer) ───
+function Icon(props: { name: string; size?: number; stroke?: string }) {
+  return <UiIcon {...props} decorative />;
 }
 
 const ICON_FOR: Record<InboxType, string> = {

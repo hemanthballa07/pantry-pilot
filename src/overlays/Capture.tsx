@@ -16,6 +16,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { Modal } from '@/components/Modal';
 import { Illo } from '@/components/Illo';
+import { Icon as UiIcon } from '@/components/ui';
 import { useToastStore } from '@/stores';
 import type { CaptureKind } from '@/stores/nav';
 import {
@@ -34,55 +35,9 @@ import {
 
 const fireToast = (msg: string) => useToastStore.getState().push(msg);
 
-// ─── Icon ─────────────────────────────────────────────────────────────────
-const ICON_PATHS: Record<string, string> = {
-  receipt: 'M6 2h12v19l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3-2 1.3V2z M9 7h6 M9 11h6 M9 15h4',
-  barcode: 'M3 5v14M6 5v14M9.5 5v14M12 5v14M15 5v14M18.5 5v14M21 5v14',
-  camera:
-    'M3 8a2 2 0 012-2h2l1.2-2h7.6L17 6h2a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8z M12 17a3.5 3.5 0 100-7 3.5 3.5 0 000 7z',
-  close: 'M6 6l12 12M18 6L6 18',
-  check: 'M4 12l5 5L20 6',
-  checkCircle: 'M12 21a9 9 0 110-18 9 9 0 010 18z M8.5 12l2.5 2.5 4.5-5',
-  plus: 'M12 5v14M5 12h14',
-  trash: 'M4 7h16 M10 11v6 M14 11v6 M6 7l1 13a2 2 0 002 2h6a2 2 0 002-2l1-13 M9 7V4h6v3',
-  upload: 'M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2 M12 15V3 M8 7l4-4 4 4',
-  sparkles:
-    'M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z M6 2l.8 2.2L9 5l-2.2.8L6 8l-.8-2.2L3 5l2.2-.8z M17 16l.6 1.8L19.4 18l-1.8.6L17 20.4l-.6-1.8L14.6 18l1.8-.6z',
-  alert:
-    'M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z',
-  info: 'M12 21a9 9 0 110-18 9 9 0 010 18z M12 16v-4 M12 8h.01',
-  timer: 'M12 22a9 9 0 110-18 9 9 0 010 18z M12 8v4l3 2 M9 2h6',
-  arrowRight: 'M5 12h14M13 5l7 7-7 7',
-  chevronLeft: 'M15 6l-6 6 6 6',
-  chevronUp: 'M6 15l6-6 6 6',
-  chevronDown: 'M6 9l6 6 6-6',
-};
-
-function Icon({
-  name,
-  size = 18,
-  stroke = 'currentColor',
-}: {
-  name: string;
-  size?: number;
-  stroke?: string;
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={stroke}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ flexShrink: 0 }}
-      aria-hidden="true"
-    >
-      <path d={ICON_PATHS[name] ?? ''} />
-    </svg>
-  );
+// ─── Icon (OQ-011b: shared components/ui primitive, decorative for the overlay layer) ───
+function Icon(props: { name: string; size?: number; stroke?: string }) {
+  return <UiIcon {...props} decorative />;
 }
 
 // ─── Pill ─────────────────────────────────────────────────────────────────

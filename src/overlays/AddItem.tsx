@@ -8,52 +8,20 @@
 // modal contract every other overlay carries. (2) The three quick-capture chips toasted
 // "coming up" placeholders in the prototype; now that the Capture overlay exists they
 // close this modal and open the matching scanner via useNavStore.setCapture (the
-// non-reactive .getState() handoff, as RecipeDetail does for Start cooking). Primitives
-// (Icon) are inlined per the per-file convention; Modal comes from the shared components/ layer.
+// non-reactive .getState() handoff, as RecipeDetail does for Start cooking). The inline
+// Button follows the per-file convention; Icon (decorative) + Modal come from the shared components/ layer.
 import { useState, type ReactNode } from 'react';
 import { Modal } from '@/components/Modal';
+import { Icon as UiIcon } from '@/components/ui';
 import { useNavStore, useToastStore } from '@/stores';
 import type { CaptureKind } from '@/stores/nav';
 
 const fireToast = (msg: string) => useToastStore.getState().push(msg);
 const openCapture = (kind: CaptureKind) => useNavStore.getState().setCapture(kind);
 
-// ─── Icon ───────────────────────────────────────────────────────────────────
-const ICON_PATHS: Record<string, string> = {
-  close: 'M6 6l12 12M18 6L6 18',
-  check: 'M4 12l5 5L20 6',
-  receipt: 'M6 2h12v19l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3V2z M9 7h6 M9 11h6 M9 15h4',
-  barcode: 'M3 5v14M6 5v14M9.5 5v14M12 5v14M15 5v14M18.5 5v14M21 5v14',
-  scan: 'M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2',
-  sparkles:
-    'M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z M6 2l.8 2.2L9 5l-2.2.8L6 8l-.8-2.2L3 5l2.2-.8z M17 16l.6 1.8L19.4 18l-1.8.6L17 20.4l-.6-1.8L14.6 18l1.8-.6z',
-};
-
-function Icon({
-  name,
-  size = 18,
-  stroke = 'currentColor',
-}: {
-  name: string;
-  size?: number;
-  stroke?: string;
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={stroke}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ flexShrink: 0 }}
-      aria-hidden="true"
-    >
-      <path d={ICON_PATHS[name] ?? ''} />
-    </svg>
-  );
+// ─── Icon (OQ-011b: shared components/ui primitive, decorative for the overlay layer) ───
+function Icon(props: { name: string; size?: number; stroke?: string }) {
+  return <UiIcon {...props} decorative />;
 }
 
 // ─── Button ───────────────────────────────────────────────────────────────

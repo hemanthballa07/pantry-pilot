@@ -5,56 +5,21 @@
 //
 // "Start cooking" closes this drawer and opens the Cook Mode overlay via
 // useNavStore.openCook (legacy onCook). Save / Add-missing fire toasts as in the
-// legacy (the toast {icon} option is dropped — the store derives the glyph). Primitives
-// (Icon/Pill/Button) are inlined per the project's per-file convention; Drawer +
-// Illo come from the shared components/ layer.
+// legacy (the toast {icon} option is dropped — the store derives the glyph). Pill/Button
+// follow the per-file convention; Icon (decorative) + Drawer + Illo come from the shared components/ layer.
 import type { ReactNode } from 'react';
 import { Drawer } from '@/components/Drawer';
 import { Illo } from '@/components/Illo';
+import { Icon as UiIcon } from '@/components/ui';
 import { mock } from '@/data/mock';
 import { useNavStore, useToastStore } from '@/stores';
 import type { Recipe } from '@/types';
 
 const fireToast = (msg: string) => useToastStore.getState().push(msg);
 
-// ─── Icon ───────────────────────────────────────────────────────────────────
-const ICON_PATHS: Record<string, string> = {
-  close: 'M6 6l12 12M18 6L6 18',
-  check: 'M4 12l5 5L20 6',
-  info: 'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0 M12 8h.01 M11 12h1v5h1',
-  alert:
-    'M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z',
-  plus: 'M12 5v14M5 12h14',
-  cart: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM16 10a4 4 0 01-8 0',
-  bookmark: 'M6 3h12v18l-6-4-6 4z',
-  arrowRight: 'M5 12h14M13 5l7 7-7 7',
-};
-
-function Icon({
-  name,
-  size = 18,
-  stroke = 'currentColor',
-}: {
-  name: string;
-  size?: number;
-  stroke?: string;
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={stroke}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ flexShrink: 0 }}
-      aria-hidden="true"
-    >
-      <path d={ICON_PATHS[name] ?? ''} />
-    </svg>
-  );
+// ─── Icon (OQ-011b: shared components/ui primitive, decorative for the overlay layer) ───
+function Icon(props: { name: string; size?: number; stroke?: string }) {
+  return <UiIcon {...props} decorative />;
 }
 
 // ─── Pill ─────────────────────────────────────────────────────────────────

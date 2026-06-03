@@ -9,44 +9,15 @@
 // router-free, so Pilot replies with a canned line after a short delay — the same
 // graceful path the legacy already fell back to when the call failed. The reply
 // timers are tracked in a ref and cleared on unmount so they never setState after
-// close (the Capture overlay's barcode-timer lesson). Primitives (Icon) are inlined
-// per the project's per-file convention; Drawer comes from the shared components/ layer.
+// close (the Capture overlay's barcode-timer lesson). Icon (decorative) + Drawer
+// come from the shared components/ layer.
 import { useEffect, useRef, useState } from 'react';
 import { Drawer } from '@/components/Drawer';
+import { Icon as UiIcon } from '@/components/ui';
 
-// ─── Icon ───────────────────────────────────────────────────────────────────
-const ICON_PATHS: Record<string, string> = {
-  close: 'M6 6l12 12M18 6L6 18',
-  arrowRight: 'M5 12h14M13 5l7 7-7 7',
-  sparkles:
-    'M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z M6 2l.8 2.2L9 5l-2.2.8L6 8l-.8-2.2L3 5l2.2-.8z M17 16l.6 1.8L19.4 18l-1.8.6L17 20.4l-.6-1.8L14.6 18l1.8-.6z',
-};
-
-function Icon({
-  name,
-  size = 18,
-  stroke = 'currentColor',
-}: {
-  name: string;
-  size?: number;
-  stroke?: string;
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={stroke}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ flexShrink: 0 }}
-      aria-hidden="true"
-    >
-      <path d={ICON_PATHS[name] ?? ''} />
-    </svg>
-  );
+// ─── Icon (OQ-011b: shared components/ui primitive, decorative for the overlay layer) ───
+function Icon(props: { name: string; size?: number; stroke?: string }) {
+  return <UiIcon {...props} decorative />;
 }
 
 // ─── Chat bubble ─────────────────────────────────────────────────────────────

@@ -2,10 +2,11 @@
 // TSX port of the legacy src/screens/cook-mode.jsx CookNow. All scaling/step/
 // adaptation logic lives in @/lib/cook (pure, unit-tested — OQ-003); this file
 // is the React shell. Rendered full-screen (position:fixed, z-index 70) by the
-// <Overlays> host, not a Drawer. Toasts go through the store; primitives are
-// inlined per the per-file convention, Illo is shared.
+// <Overlays> host, not a Drawer. Toasts go through the store; Icon (decorative)
+// + Illo come from the shared components/ layer.
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { useFocusTrap } from '@/components/useFocusTrap';
+import { Icon as UiIcon } from '@/components/ui';
 import { mock } from '@/data/mock';
 import { useToastStore } from '@/stores';
 import { Illo } from '@/components/Illo';
@@ -30,57 +31,9 @@ const fireToast = (msg: string) => useToastStore.getState().push(msg);
 
 type Level = 'beginner' | 'intermediate' | 'advanced';
 
-// ─── Icon ───────────────────────────────────────────────────────────────────
-const ICON_PATHS: Record<string, string> = {
-  close: 'M6 6l12 12M18 6L6 18',
-  check: 'M4 12l5 5L20 6',
-  info: 'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0 M12 8h.01 M11 12h1v5h1',
-  plus: 'M12 5v14M5 12h14',
-  chevronLeft: 'M15 6l-6 6 6 6',
-  chevronRight: 'M9 6l6 6-6 6',
-  arrowRight: 'M5 12h14M13 5l7 7-7 7',
-  timer: 'M12 6a8 8 0 110 16 8 8 0 010-16z M10 2h4 M12 10v4',
-  wallet:
-    'M2 7a2 2 0 012-2h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7zm14 5a1 1 0 110-2 1 1 0 010 2z',
-  fire: 'M12 2c0 4 5 5 5 11a5 5 0 0 1-10 0c0-1 1-3 2-4-1 4 3 4 3 4-2-3 0-7 0-11z',
-  flame: 'M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 1-5s-2-3-2-3 4 0 6-2z',
-  leaf: 'M17 8C8 10 5.9 16.17 3.82 22 8 22 12 21 14 18c2-3 0-7-3-7s-5 3-3 7',
-  edit: 'M14 4l6 6L9 21H3v-6z',
-  save: 'M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2zM17 21v-8H7v8M7 3v5h8',
-  cart: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM16 10a4 4 0 01-8 0',
-  users:
-    'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75',
-  alert:
-    'M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z',
-  sparkles:
-    'M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z M6 2l.8 2.2L9 5l-2.2.8L6 8l-.8-2.2L3 5l2.2-.8z M17 16l.6 1.8L19.4 18l-1.8.6L17 20.4l-.6-1.8L14.6 18l1.8-.6z',
-};
-
-function Icon({
-  name,
-  size = 18,
-  stroke = 'currentColor',
-}: {
-  name: string;
-  size?: number;
-  stroke?: string;
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={stroke}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ flexShrink: 0 }}
-      aria-hidden="true"
-    >
-      <path d={ICON_PATHS[name] ?? ''} />
-    </svg>
-  );
+// ─── Icon (OQ-011b: shared components/ui primitive, decorative for the overlay layer) ───
+function Icon(props: { name: string; size?: number; stroke?: string }) {
+  return <UiIcon {...props} decorative />;
 }
 
 // ─── Pill / Button / Card ─────────────────────────────────────────────────

@@ -17,6 +17,7 @@ import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import { Modal } from '@/components/Modal';
 import { Illo } from '@/components/Illo';
 import { mock } from '@/data/mock';
+import { Icon as UiIcon } from '@/components/ui';
 import { ingrIllo } from '@/data/recipes';
 import { useToastStore } from '@/stores';
 import type { GroceryItem } from '@/types';
@@ -24,44 +25,9 @@ import { RETAILERS, getRetailer, computeTotals, type Fulfillment } from '@/lib/c
 
 const fireToast = (msg: string) => useToastStore.getState().push(msg);
 
-// ─── Icon ───────────────────────────────────────────────────────────────────
-const ICON_PATHS: Record<string, string> = {
-  cart: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM16 10a4 4 0 01-8 0',
-  close: 'M6 6l12 12M18 6L6 18',
-  check: 'M4 12l5 5L20 6',
-  plus: 'M12 5v14M5 12h14',
-  trash: 'M4 7h16 M10 11v6 M14 11v6 M6 7l1 13a2 2 0 002 2h6a2 2 0 002-2l1-13 M9 7V4h6v3',
-  timer: 'M12 22a9 9 0 110-18 9 9 0 010 18z M12 8v4l3 2 M9 2h6',
-  arrowRight: 'M5 12h14M13 5l7 7-7 7',
-  sparkles:
-    'M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z M6 2l.8 2.2L9 5l-2.2.8L6 8l-.8-2.2L3 5l2.2-.8z M17 16l.6 1.8L19.4 18l-1.8.6L17 20.4l-.6-1.8L14.6 18l1.8-.6z',
-};
-
-function Icon({
-  name,
-  size = 18,
-  stroke = 'currentColor',
-}: {
-  name: string;
-  size?: number;
-  stroke?: string;
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={stroke}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ flexShrink: 0 }}
-      aria-hidden="true"
-    >
-      <path d={ICON_PATHS[name] ?? ''} />
-    </svg>
-  );
+// ─── Icon (OQ-011b: shared components/ui primitive, decorative for the overlay layer) ───
+function Icon(props: { name: string; size?: number; stroke?: string }) {
+  return <UiIcon {...props} decorative />;
 }
 
 // ─── Pill ───────────────────────────────────────────────────────────────────
