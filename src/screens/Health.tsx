@@ -5,38 +5,7 @@ import { useState } from 'react';
 import type { CSSProperties, ReactNode } from 'react';
 import { mock } from '@/data/mock';
 import { useToastStore, useNavStore } from '@/stores';
-
-// ─── Icon ─────────────────────────────────────────────────────────────────
-
-const ICON_PATHS: Record<string, string> = {
-  sparkles:
-    'M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z M6 2l.8 2.2L9 5l-2.2.8L6 8l-.8-2.2L3 5l2.2-.8z M17 16l.6 1.8L19.4 18l-1.8.6L17 20.4l-.6-1.8L14.6 18l1.8-.6z',
-  check: 'M20 6L9 17l-5-5',
-  plus: 'M12 5v14M5 12h14',
-};
-
-interface IconProps {
-  name: string;
-  size?: number;
-  stroke?: string;
-}
-function Icon({ name, size = 18, stroke = 'currentColor' }: IconProps) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={stroke}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ flexShrink: 0 }}
-    >
-      <path d={ICON_PATHS[name] ?? ''} />
-    </svg>
-  );
-}
+import { Icon } from '@/components/ui';
 
 // ─── Illo ─────────────────────────────────────────────────────────────────
 

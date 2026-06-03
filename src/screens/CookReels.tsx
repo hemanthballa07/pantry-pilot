@@ -6,40 +6,12 @@
 // the shared Illo is imported. The legacy toast { icon } option is dropped.
 import { useState } from 'react';
 import { Illo } from '@/components/Illo';
+import { Icon } from '@/components/ui';
 import { mock } from '@/data/mock';
 import { useToastStore } from '@/stores';
 import type { Reel } from '@/types';
 
 const fireToast = (msg: string) => useToastStore.getState().push(msg);
-
-// ─── Icon ─────────────────────────────────────────────────────────────────
-const ICON_PATHS: Record<string, string> = {
-  heart: 'M12 21s-7-4.5-9-9c-1.5-3 1-7 5-7 2 0 3 1 4 2 1-1 2-2 4-2 4 0 6.5 4 5 7-2 4.5-9 9-9 9z',
-  bookmark: 'M6 3h12v18l-6-4-6 4z',
-  chef: 'M6 13a4 4 0 1 1 2-7.5 4 4 0 0 1 8 0A4 4 0 1 1 18 13v4H6z M6 17h12v3a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1z',
-  upload: 'M12 16V4M5 11l7-7 7 7 M3 20h18',
-  circle: 'M12 3a9 9 0 1 0 0 18 a9 9 0 1 0 0-18z',
-  check: 'M4 12l5 5L20 6',
-};
-
-function Icon({ name, size = 18 }: { name: string; size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ flexShrink: 0 }}
-      aria-hidden="true"
-    >
-      <path d={ICON_PATHS[name] ?? ''} />
-    </svg>
-  );
-}
 
 // ─── Pill (ghost tone only — the saved counter) ─────────────────────────────
 function Pill({ icon, children }: { icon?: string; children?: React.ReactNode }) {

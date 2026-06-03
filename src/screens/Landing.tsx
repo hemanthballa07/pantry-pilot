@@ -9,51 +9,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useToastStore } from '@/stores';
 import { mock } from '@/data/mock';
-
-// ─── Icon ─────────────────────────────────────────────────────────────────
-
-const ICON_PATHS: Record<string, string> = {
-  sparkles:
-    'M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z M6 2l.8 2.2L9 5l-2.2.8L6 8l-.8-2.2L3 5l2.2-.8z M17 16l.6 1.8L19.4 18l-1.8.6L17 20.4l-.6-1.8L14.6 18l1.8-.6z',
-  arrowRight: 'M5 12h14M12 5l7 7-7 7',
-  circle: 'M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z',
-  check: 'M20 6L9 17l-5-5',
-  wallet:
-    'M21 7H3a2 2 0 00-2 2v8a2 2 0 002 2h18a2 2 0 002-2V9a2 2 0 00-2-2zM16 13a1 1 0 100-2 1 1 0 000 2zM3 11h18',
-  users:
-    'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75',
-  scan: 'M4 7V4h3M17 4h3v3M4 17v3h3M17 20h3v-3',
-  chef: 'M9 22V12h6v10M6 12h12M12 2a4 4 0 014 4H8a4 4 0 014-4z',
-  clock: 'M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 6v6l4 2',
-  pantry: 'M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2zM9 22V12h6v10',
-  chevronRight: 'M9 18l6-6-6-6',
-  alert:
-    'M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01',
-};
-
-interface IconProps {
-  name: string;
-  size?: number;
-  stroke?: string;
-}
-
-function Icon({ name, size = 18, stroke = 'currentColor' }: IconProps) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={stroke}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ flexShrink: 0 }}
-    >
-      <path d={ICON_PATHS[name] ?? ''} />
-    </svg>
-  );
-}
+import { Icon } from '@/components/ui';
 
 // ─── Illo ─────────────────────────────────────────────────────────────────
 // Phase 3 placeholder — a colored rounded square. OQ-009 will wire real SVGs.

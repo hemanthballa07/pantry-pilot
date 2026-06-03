@@ -26,4 +26,28 @@ describe('Icon (ui)', () => {
     const { container } = render(<Icon name="check" stroke="var(--ink-soft)" />);
     expect(container.querySelector('svg')?.getAttribute('stroke')).toBe('var(--ink-soft)');
   });
+
+  it('is not aria-hidden by default, but is when decorative (overlay layer)', () => {
+    const plain = render(<Icon name="check" />);
+    expect(plain.container.querySelector('svg')?.getAttribute('aria-hidden')).toBeNull();
+    const deco = render(<Icon name="check" decorative />);
+    expect(deco.container.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('resolves the canonical NEW glyph names added for OQ-011b', () => {
+    // The 8 names the divergent files needed that weren't in the Phase-A union.
+    for (const name of [
+      'scan',
+      'camera',
+      'barcode',
+      'checkCircle',
+      'arrowUp',
+      'arrowDown',
+      'chevronUp',
+      'chevronDown',
+    ]) {
+      const { container } = render(<Icon name={name} />);
+      expect(container.querySelector('path')?.getAttribute('d')).not.toBe('');
+    }
+  });
 });

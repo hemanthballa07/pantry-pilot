@@ -5,6 +5,7 @@ import { Fragment } from 'react';
 import type { CSSProperties, ReactNode, MouseEventHandler } from 'react';
 import { mock } from '@/data/mock';
 import { useToastStore, useNavStore } from '@/stores';
+import { Icon } from '@/components/ui';
 
 // ─── Derived types ────────────────────────────────────────────────────────
 
@@ -16,50 +17,6 @@ type Win = (typeof mock.kitchenWins)[number];
 type GroceryItem = (typeof mock.grocery)[number];
 type Leftover = (typeof mock.leftovers)[number];
 type ActivityEntry = (typeof mock.activity)[number];
-
-// ─── Icon ─────────────────────────────────────────────────────────────────
-
-const ICON_PATHS: Record<string, string> = {
-  sparkles:
-    'M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z M6 2l.8 2.2L9 5l-2.2.8L6 8l-.8-2.2L3 5l2.2-.8z M17 16l.6 1.8L19.4 18l-1.8.6L17 20.4l-.6-1.8L14.6 18l1.8-.6z',
-  check: 'M20 6L9 17l-5-5',
-  chevronRight: 'M9 18l6-6-6-6',
-  alert:
-    'M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z',
-  wallet:
-    'M2 7a2 2 0 012-2h16a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V7zm14 5a1 1 0 110-2 1 1 0 010 2z',
-  leaf: 'M17 8C8 10 5.9 16.17 3.82 22 8 22 12 21 14 18c2-3 0-7-3-7s-5 3-3 7',
-  arrowRight: 'M5 12h14M12 5l7 7-7 7',
-  chef: 'M6 13a6 6 0 0112 0v3H6v-3zM9 16v2a3 3 0 006 0v-2',
-  cart: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM16 10a4 4 0 01-8 0',
-  scan: 'M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2',
-  bag: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18',
-  save: 'M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2zM17 21v-8H7v8M7 3v5h8',
-  plus: 'M12 5v14M5 12h14',
-};
-
-interface IconProps {
-  name: string;
-  size?: number;
-  stroke?: string;
-}
-function Icon({ name, size = 18, stroke = 'currentColor' }: IconProps) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke={stroke}
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      style={{ flexShrink: 0 }}
-    >
-      <path d={ICON_PATHS[name] ?? ''} />
-    </svg>
-  );
-}
 
 // ─── Illo ─────────────────────────────────────────────────────────────────
 

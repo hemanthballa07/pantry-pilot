@@ -5,16 +5,24 @@
 const ICON_PATHS: Record<string, string> = {
   alert:
     'M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z',
+  arrowDown: 'M12 5v14M5 12l7 7 7-7',
   arrowRight: 'M5 12h14M13 5l7 7-7 7',
+  arrowUp: 'M12 19V5M5 12l7-7 7 7',
   bag: 'M6 7h12l-1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z M9 7a3 3 0 1 1 6 0',
+  barcode: 'M3 5v14M6 5v14M9.5 5v14M12 5v14M15 5v14M18.5 5v14M21 5v14',
+  camera:
+    'M3 8a2 2 0 012-2h2l1.2-2h7.6L17 6h2a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V8z M12 17a3.5 3.5 0 100-7 3.5 3.5 0 000 7z',
   bookmark: 'M6 3h12v18l-6-4-6 4z',
   calendar:
     'M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z M3 11h18 M8 3v4 M16 3v4',
   cart: 'M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM16 10a4 4 0 01-8 0',
   check: 'M20 6L9 17l-5-5',
+  checkCircle: 'M12 21a9 9 0 110-18 9 9 0 010 18z M8.5 12l2.5 2.5 4.5-5',
   chef: 'M6 13a6 6 0 0112 0v3H6v-3zM9 16v2a3 3 0 006 0v-2',
+  chevronDown: 'M6 9l6 6 6-6',
   chevronLeft: 'M15 6l-6 6 6 6',
   chevronRight: 'M9 18l6-6-6-6',
+  chevronUp: 'M6 15l6-6 6 6',
   circle: 'M12 3a9 9 0 1 0 0 18 a9 9 0 1 0 0-18z',
   clock: 'M12 3a9 9 0 100 18 9 9 0 000-18z M12 7v5l3 2',
   close: 'M6 6l12 12M18 6L6 18',
@@ -36,6 +44,7 @@ const ICON_PATHS: Record<string, string> = {
   plus: 'M12 5v14M5 12h14',
   receipt: 'M6 2h12v19l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3V2z M9 7h6 M9 11h6 M9 15h4',
   save: 'M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2zM17 21v-8H7v8M7 3v5h8',
+  scan: 'M3 7V5a2 2 0 012-2h2M17 3h2a2 2 0 012 2v2M21 17v2a2 2 0 01-2 2h-2M7 21H5a2 2 0 01-2-2v-2',
   snowflake: 'M12 2v20 M2 12h20 M5 5l14 14 M19 5L5 19',
   sparkles:
     'M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z M6 2l.8 2.2L9 5l-2.2.8L6 8l-.8-2.2L3 5l2.2-.8z M17 16l.6 1.8L19.4 18l-1.8.6L17 20.4l-.6-1.8L14.6 18l1.8-.6z',
@@ -53,9 +62,13 @@ interface IconProps {
   name: string;
   size?: number;
   stroke?: string;
+  /** Mark the icon decorative (aria-hidden) — used by the overlay layer, whose
+   *  icons sit beside text labels. Off by default to preserve the screen
+   *  primitives' existing behavior. */
+  decorative?: boolean;
 }
 
-export function Icon({ name, size = 18, stroke = 'currentColor' }: IconProps) {
+export function Icon({ name, size = 18, stroke = 'currentColor', decorative }: IconProps) {
   return (
     <svg
       width={size}
@@ -67,6 +80,7 @@ export function Icon({ name, size = 18, stroke = 'currentColor' }: IconProps) {
       strokeLinecap="round"
       strokeLinejoin="round"
       style={{ flexShrink: 0 }}
+      aria-hidden={decorative || undefined}
     >
       <path d={ICON_PATHS[name] ?? ''} />
     </svg>
