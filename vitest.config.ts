@@ -19,5 +19,13 @@ export default defineConfig({
     setupFiles: ['./src/test/setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],
     css: false,
+    // The heavy overlay integration suites (Capture/Checkout/RecipeDetail/CookMode)
+    // drive fake timers over large trees; under CPU contention (e.g. a concurrent
+    // Docker/amd64 VRT run) they can exceed the 5s default and false-fail. A 15s
+    // ceiling costs nothing on a passing run, and bounding the pool keeps emulation
+    // load from starving workers — both remove the flake without serializing the suite.
+    testTimeout: 15000,
+    hookTimeout: 15000,
+    poolOptions: { threads: { maxThreads: 4, minThreads: 1 } },
   },
 });

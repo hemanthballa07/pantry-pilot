@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { mock } from '@/data/mock';
-import type { Recipe } from '@/types';
+import type { Recipe, Step } from '@/types';
 import {
   fmtQty,
   scaleIngredients,
@@ -8,6 +8,9 @@ import {
   applyAdaptations,
   adaptDelta,
   recipeUsesHeat,
+  donenessFor,
+  suggestedAdapts,
+  beginnerCue,
 } from './cook';
 
 const recipes = mock.recipes as readonly Recipe[];
@@ -80,5 +83,44 @@ describe('recipeUsesHeat', () => {
     expect(recipeUsesHeat(r1, scaleIngredients(r1, 2, 'medium'))).toBe(true);
     const cool = recipes.find((r) => /parfait|pancake/i.test(r.name))!;
     expect(recipeUsesHeat(cool, scaleIngredients(cool, 2, 'medium'))).toBe(false);
+  });
+});
+
+describe('donenessFor', () => {
+  const timedBrown: Step = {
+    title: 'Sear the egg',
+    body: 'fry hard until the edges crisp',
+    timer: 2,
+  };
+  it('offers a 3-option doneness choice for a timed browning step', () => {
+    const d = donenessFor(timedBrown);
+    expect(d).not.toBeNull();
+    expect(d!.options).toHaveLength(3);
+    expect(d!.options.map((o) => o.dt)).toEqual([-1, 0, 1]);
+  });
+  it('returns null for a timed step with no browning keyword', () => {
+    expect(donenessFor({ title: 'Boil water', body: 'add a pinch of salt', timer: 5 })).toBeNull();
+  });
+  it('returns null for a browning step with no timer (nothing to nudge)', () => {
+    expect(donenessFor({ title: 'Sear the egg', body: 'fry it' })).toBeNull();
+  });
+});
+
+describe('suggestedAdapts', () => {
+  it("always seeds 'healthier'", () => {
+    expect(suggestedAdapts('mild', false).has('healthier')).toBe(true);
+  });
+  it("adds 'spicier' only when the dish uses heat AND the spice is spicy/extra", () => {
+    expect(suggestedAdapts('spicy', true).has('spicier')).toBe(true);
+    expect(suggestedAdapts('extra', true).has('spicier')).toBe(true);
+    expect(suggestedAdapts('mild', true).has('spicier')).toBe(false); // not spicy enough
+    expect(suggestedAdapts('spicy', false).has('spicier')).toBe(false); // no heat element
+  });
+});
+
+describe('beginnerCue', () => {
+  it('returns a non-empty cue and clamps an out-of-range index to the last one', () => {
+    expect(beginnerCue(0).length).toBeGreaterThan(0);
+    expect(beginnerCue(999)).toBe(beginnerCue(998));
   });
 });

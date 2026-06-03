@@ -42,8 +42,6 @@ export interface Recipe {
   uses: string[];
   expiringUsed: string[];
   cost: number;
-  // Present only on r1. Flagged as a discovery — see PROJECT_LOG OQ-007.
-  costSingle?: boolean;
   cals: number;
   protein: number;
   carbs: number;

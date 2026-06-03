@@ -1153,7 +1153,7 @@ function WeekPreview({
   onNav: (id: string) => void;
   onOpenRecipe: (_id: string) => void;
 }) {
-  const mealPlan = mock.mealPlan as Record<string, Record<string, string | null>>;
+  const mealPlan = mock.mealPlan;
   const recipeById = (id: string) => mock.recipes.find((r) => r.id === id);
   return (
     <Card pad={22}>
@@ -1185,7 +1185,7 @@ function WeekPreview({
             {d}
           </div>
         ))}
-        {['B', 'L', 'D'].map((slot) => (
+        {(['B', 'L', 'D'] as const).map((slot) => (
           <Fragment key={slot}>
             <div
               style={{

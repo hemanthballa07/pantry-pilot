@@ -452,7 +452,6 @@ export const mock = {
       uses: ['Cooked Rice', 'Eggs', 'Bell Peppers', 'Carrots', 'Garlic', 'Schezwan Sauce'],
       expiringUsed: ['Cooked Rice', 'Spinach'],
       cost: 2.4,
-      costSingle: true,
       cals: 480,
       protein: 18,
       carbs: 62,
