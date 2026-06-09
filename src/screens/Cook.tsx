@@ -25,70 +25,12 @@ import { useToastStore, useNavStore, useSearchStore } from '@/stores';
 import type { Recipe, Diet, Cuisine } from '@/types';
 import { CookReels } from './CookReels';
 import { Icon, Pill, Button } from '@/components/ui';
+import { Illo } from '@/components/Illo';
 
 // Non-reactive store access for event handlers (no subscription needed — the
 // screen never renders the toast/inbox itself; their hosts subscribe separately).
 const fireToast = (msg: string) => useToastStore.getState().push(msg);
 const openInbox = () => useNavStore.getState().openInbox();
-
-// ─── Illo ─────────────────────────────────────────────────────────────────
-
-const ILLO_COLORS: Record<string, string> = {
-  rice: '#E8D9A8',
-  bread: '#D4A853',
-  chicken: '#C9884A',
-  carrot: '#E07840',
-  beans: '#8B6040',
-  frozenveg: '#7ABFA8',
-  berries: '#8E4A8E',
-  chili: '#C93A3A',
-  banana: '#E8C840',
-  milk: '#F0EAD6',
-  tofu: '#F0EDD8',
-  oats: '#C8A878',
-  oil: '#C8B860',
-  coffee: '#6B4226',
-  salt: '#E8E8E0',
-  pasta: '#E8CF88',
-  cheese: '#E8B840',
-  ricebag: '#D4C090',
-  peanutbutter: '#C8904A',
-  soy: '#8B7340',
-  onion: '#C8A8C8',
-  garlic: '#E8D8C0',
-  tomato: '#C83A3A',
-  pepper: '#3A9848',
-  spinach: '#3B6E3D',
-  egg: '#C99325',
-  yogurt: '#E8DCC8',
-  apple: '#C73E2E',
-  // recipe / cuisine illos specific to this screen
-  noodles: '#E0C070',
-  tortilla: '#E8C88A',
-  paneer: '#F0EAD6',
-  lentils: '#C97A3A',
-};
-
-interface IlloProps {
-  name: string;
-  size?: number;
-}
-function Illo({ name, size = 48 }: IlloProps) {
-  const bg = ILLO_COLORS[name] ?? 'var(--line, rgba(0,0,0,.1))';
-  return (
-    <div
-      aria-label={name}
-      style={{
-        width: size,
-        height: size,
-        borderRadius: Math.round(size * 0.22),
-        background: bg,
-        opacity: 0.82,
-        flexShrink: 0,
-      }}
-    />
-  );
-}
 
 // ─── Card ─────────────────────────────────────────────────────────────────
 

@@ -6,36 +6,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import { mock } from '@/data/mock';
 import { useToastStore, useNavStore } from '@/stores';
 import { Icon } from '@/components/ui';
-
-// ─── Illo ─────────────────────────────────────────────────────────────────
-
-const ILLO_COLORS: Record<string, string> = {
-  yogurt: '#E8DCC8',
-  apple: '#C73E2E',
-  spinach: '#3B6E3D',
-  egg: '#C99325',
-};
-
-interface IlloProps {
-  name: string;
-  size?: number;
-}
-function Illo({ name, size = 48 }: IlloProps) {
-  const bg = ILLO_COLORS[name] ?? 'var(--line, rgba(0,0,0,.1))';
-  return (
-    <div
-      aria-label={name}
-      style={{
-        width: size,
-        height: size,
-        borderRadius: Math.round(size * 0.22),
-        background: bg,
-        opacity: 0.82,
-        flexShrink: 0,
-      }}
-    />
-  );
-}
+import { Illo } from '@/components/Illo';
 
 // ─── Card ─────────────────────────────────────────────────────────────────
 
