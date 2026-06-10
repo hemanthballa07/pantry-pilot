@@ -84,7 +84,9 @@ test('Ask Pilot overlay opens from the top bar and closes (Phase 6)', async ({ p
   expect(errors).toEqual([]);
 });
 
-test('⌘K / Ctrl+K focuses the TopBar search (OQ-018)', async ({ page }) => {
+test('⌘K / Ctrl+K focuses the TopBar search + shows the focus ring (OQ-018 / OQ-020)', async ({
+  page,
+}) => {
   const errors = trackErrors(page);
   await page.goto('/dashboard', { waitUntil: 'networkidle' });
 
@@ -94,6 +96,15 @@ test('⌘K / Ctrl+K focuses the TopBar search (OQ-018)', async ({ page }) => {
   // ControlOrMeta = Cmd on macOS, Ctrl on the Linux CI runner.
   await page.keyboard.press('ControlOrMeta+KeyK');
   await expect(search).toBeFocused();
+
+  // OQ-020: the keyboard-focused search now shows the themed :focus-visible ring
+  // (was suppressed by an inline outline:'none').
+  const outline = await search.evaluate((el) => {
+    const s = getComputedStyle(el);
+    return { style: s.outlineStyle, width: s.outlineWidth };
+  });
+  expect(outline.style).toBe('solid');
+  expect(outline.width).toBe('2px');
 
   expect(errors).toEqual([]);
 });

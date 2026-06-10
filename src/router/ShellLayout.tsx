@@ -413,7 +413,6 @@ function TopBar({ title }: { title: string }) {
           style={{
             flex: 1,
             border: 'none',
-            outline: 'none',
             background: 'transparent',
             fontSize: 13,
             color: 'var(--ink)',

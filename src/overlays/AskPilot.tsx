@@ -273,7 +273,6 @@ export function AskPilot({ onClose }: { onClose: () => void }) {
               style={{
                 flex: 1,
                 border: 'none',
-                outline: 'none',
                 background: 'transparent',
                 fontSize: 13.5,
                 color: 'var(--ink)',
