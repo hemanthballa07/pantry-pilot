@@ -1,4 +1,4 @@
-import { useState, Suspense } from 'react';
+import { useState, useRef, useEffect, Suspense } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Icon, type IconName } from '@/components/Icon';
 import { Avatar } from '@/components/Avatar';
@@ -350,6 +350,19 @@ function TopBar({ title }: { title: string }) {
   const pushToast = useToastStore((s) => s.push);
   const navigate = useNavigate();
 
+  // ⌘K (macOS) / Ctrl+K focuses the search from anywhere in the shell.
+  const searchRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        searchRef.current?.focus();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
   return (
     <header
       style={{
@@ -392,6 +405,7 @@ function TopBar({ title }: { title: string }) {
       >
         <Icon name="search" size={15} />
         <input
+          ref={searchRef}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search or ask in plain English…"
@@ -406,7 +420,7 @@ function TopBar({ title }: { title: string }) {
             fontFamily: 'inherit',
           }}
         />
-        {/* Visual affordance only — the ⌘K focus shortcut is not wired yet. */}
+        {/* ⌘K / Ctrl+K focuses this search — wired via the TopBar window keydown listener. */}
         <span style={{ fontSize: 11, color: 'var(--ink-soft)', fontFamily: 'var(--font-mono)' }}>
           ⌘K
         </span>

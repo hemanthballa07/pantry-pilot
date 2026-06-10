@@ -83,3 +83,17 @@ test('Ask Pilot overlay opens from the top bar and closes (Phase 6)', async ({ p
 
   expect(errors).toEqual([]);
 });
+
+test('⌘K / Ctrl+K focuses the TopBar search (OQ-018)', async ({ page }) => {
+  const errors = trackErrors(page);
+  await page.goto('/dashboard', { waitUntil: 'networkidle' });
+
+  const search = page.getByRole('textbox', { name: 'Search' });
+  await expect(search).not.toBeFocused();
+
+  // ControlOrMeta = Cmd on macOS, Ctrl on the Linux CI runner.
+  await page.keyboard.press('ControlOrMeta+KeyK');
+  await expect(search).toBeFocused();
+
+  expect(errors).toEqual([]);
+});
