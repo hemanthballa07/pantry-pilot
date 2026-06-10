@@ -795,6 +795,8 @@ function CookSetup({
                 sub="Pilot tunes sauce, chili, and seasoning to match your tolerance."
               />
               <div
+                role="radiogroup"
+                aria-label="Spice level"
                 style={{
                   display: 'grid',
                   gridTemplateColumns: 'repeat(4, 1fr)',
@@ -809,7 +811,26 @@ function CookSetup({
                   return (
                     <button
                       key={key}
+                      role="radio"
+                      aria-checked={isOn}
+                      aria-label={SPICE_LABEL[key]}
+                      tabIndex={isOn ? 0 : -1}
                       onClick={() => setSpice(key)}
+                      onKeyDown={(e) => {
+                        const keys = Object.keys(spiceSpec) as Spice[];
+                        const i = keys.indexOf(key);
+                        let next: number;
+                        if (e.key === 'ArrowRight' || e.key === 'ArrowDown')
+                          next = (i + 1) % keys.length;
+                        else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp')
+                          next = (i - 1 + keys.length) % keys.length;
+                        else return;
+                        e.preventDefault();
+                        setSpice(keys[next]);
+                        (
+                          e.currentTarget.parentElement?.children[next] as HTMLElement | undefined
+                        )?.focus();
+                      }}
                       style={{
                         padding: '14px 14px',
                         background: isOn ? 'var(--paper-warm)' : 'var(--paper)',
@@ -1157,6 +1178,8 @@ function CookFlow({
         </button>
 
         <div
+          role="radiogroup"
+          aria-label="Recipe difficulty"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -1170,7 +1193,22 @@ function CookFlow({
           {(['beginner', 'intermediate', 'advanced'] as Level[]).map((l) => (
             <button
               key={l}
+              role="radio"
+              aria-checked={level === l}
+              tabIndex={level === l ? 0 : -1}
               onClick={() => setLevel(l)}
+              onKeyDown={(e) => {
+                const opts: Level[] = ['beginner', 'intermediate', 'advanced'];
+                const i = opts.indexOf(l);
+                let next: number;
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i + 1) % opts.length;
+                else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp')
+                  next = (i - 1 + opts.length) % opts.length;
+                else return;
+                e.preventDefault();
+                setLevel(opts[next]);
+                (e.currentTarget.parentElement?.children[next] as HTMLElement | undefined)?.focus();
+              }}
               style={{
                 padding: '5px 10px',
                 fontSize: 11.5,
@@ -1250,7 +1288,7 @@ function CookFlow({
                 Previous
               </Button>
             </div>
-            <div style={{ display: 'flex', gap: 4 }}>
+            <div aria-hidden="true" style={{ display: 'flex', gap: 4 }}>
               {steps.map((_, i) => (
                 <div
                   key={i}
@@ -1439,12 +1477,15 @@ function CookFlow({
                 </Pill>
               )}
             </div>
-            <div style={{ display: 'grid', gap: 0 }}>
+            <div role="group" aria-label="Ingredient checklist" style={{ display: 'grid', gap: 0 }}>
               {ingredients.map((it) => {
                 const isChecked = checked.has(it.name);
                 return (
                   <button
                     key={it.name}
+                    role="checkbox"
+                    aria-checked={isChecked}
+                    aria-label={it.name}
                     onClick={() =>
                       setChecked((s) => {
                         const n = new Set(s);

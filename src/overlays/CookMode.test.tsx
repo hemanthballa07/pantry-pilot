@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CookMode } from './CookMode';
 
@@ -58,6 +58,28 @@ describe('CookMode phase machine', () => {
     unmount();
     expect(document.activeElement).toBe(trigger);
     trigger.remove();
+  });
+
+  it('exposes the spice selector as a radiogroup with one checked radio (OQ-018)', async () => {
+    renderCook();
+    const group = screen.getByRole('radiogroup', { name: 'Spice level' });
+    const radios = within(group).getAllByRole('radio');
+    expect(radios.length).toBeGreaterThan(1);
+    expect(radios.filter((r) => r.getAttribute('aria-checked') === 'true')).toHaveLength(1);
+    const other = radios.find((r) => r.getAttribute('aria-checked') === 'false');
+    await userEvent.click(other as HTMLElement);
+    expect(other?.getAttribute('aria-checked')).toBe('true');
+  });
+
+  it('renders ingredients as toggleable checkboxes in the cook phase (OQ-018)', async () => {
+    renderCook();
+    await userEvent.click(screen.getByRole('button', { name: /start cooking/i }));
+    const checkboxes = screen.getAllByRole('checkbox');
+    expect(checkboxes.length).toBeGreaterThan(0);
+    const first = checkboxes[0];
+    expect(first.getAttribute('aria-checked')).toBe('false');
+    await userEvent.click(first);
+    expect(first.getAttribute('aria-checked')).toBe('true');
   });
 
   it('locks body scroll while open and restores it on unmount', () => {
