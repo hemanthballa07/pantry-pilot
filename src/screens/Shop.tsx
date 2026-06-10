@@ -446,6 +446,7 @@ function CookBeforeShop({
         </div>
         <button
           onClick={onDismiss}
+          aria-label="Dismiss"
           style={{
             width: 28,
             height: 28,

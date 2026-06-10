@@ -27,11 +27,11 @@ describe('Icon (ui)', () => {
     expect(container.querySelector('svg')?.getAttribute('stroke')).toBe('var(--ink-soft)');
   });
 
-  it('is not aria-hidden by default, but is when decorative (overlay layer)', () => {
+  it('is aria-hidden by default, but is not when decorative={false}', () => {
     const plain = render(<Icon name="check" />);
-    expect(plain.container.querySelector('svg')?.getAttribute('aria-hidden')).toBeNull();
-    const deco = render(<Icon name="check" decorative />);
-    expect(deco.container.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
+    expect(plain.container.querySelector('svg')?.getAttribute('aria-hidden')).toBe('true');
+    const meaningful = render(<Icon name="check" decorative={false} />);
+    expect(meaningful.container.querySelector('svg')?.getAttribute('aria-hidden')).toBeNull();
   });
 
   it('resolves the canonical NEW glyph names added for OQ-011b', () => {

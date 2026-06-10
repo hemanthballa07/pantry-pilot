@@ -47,7 +47,7 @@ export function Illo({ name, size = 48 }: IlloProps) {
   const bg = ILLO_COLORS[name] ?? 'var(--line, rgba(0,0,0,.1))';
   return (
     <div
-      aria-label={name}
+      aria-hidden
       style={{
         width: size,
         height: size,

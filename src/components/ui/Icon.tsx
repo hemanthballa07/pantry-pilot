@@ -62,13 +62,13 @@ interface IconProps {
   name: string;
   size?: number;
   stroke?: string;
-  /** Mark the icon decorative (aria-hidden) — used by the overlay layer, whose
-   *  icons sit beside text labels. Off by default to preserve the screen
-   *  primitives' existing behavior. */
+  /** Decorative by default (aria-hidden) — every instance sits beside a text
+   *  label, so the icon adds no information for a screen reader. Pass
+   *  `decorative={false}` to opt out for a meaningful standalone icon (none today). */
   decorative?: boolean;
 }
 
-export function Icon({ name, size = 18, stroke = 'currentColor', decorative }: IconProps) {
+export function Icon({ name, size = 18, stroke = 'currentColor', decorative = true }: IconProps) {
   return (
     <svg
       width={size}
