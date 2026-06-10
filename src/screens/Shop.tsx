@@ -287,6 +287,9 @@ function GroceryRow({
     >
       <button
         onClick={onToggle}
+        role="checkbox"
+        aria-checked={item.bought}
+        aria-label={item.name}
         style={{
           width: 22,
           height: 22,
@@ -747,6 +750,8 @@ function StoreMode({
             <button
               key={it.id}
               onClick={() => toggle(it.id)}
+              role="checkbox"
+              aria-checked={it.bought}
               style={{
                 width: '100%',
                 display: 'grid',

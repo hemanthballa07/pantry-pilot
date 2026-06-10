@@ -37,13 +37,25 @@ describe('Shop — cart mutable state (ADR-010)', () => {
     const firstOpen = mock.grocery.find((i) => !i.bought)!;
 
     // Exact-match the grocery row's name node, walk up to the row, click its
-    // toggle (the first/only button in a GroceryRow).
+    // toggle (the bought checkbox in a GroceryRow).
     const nameNode = screen.getAllByText(firstOpen.name)[0];
     const row = nameNode.parentElement!.parentElement!;
-    const toggle = within(row).getAllByRole('button')[0];
+    const toggle = within(row).getByRole('checkbox');
     await user.click(toggle);
 
     expect(headingLeftCount()).toBe(before - 1);
     expect(useToastStore.getState().current?.text).toBe(`Added ${firstOpen.name} to inventory`);
+  });
+
+  it('exposes each grocery toggle as a checkbox that reflects and flips bought state (OQ-019)', async () => {
+    const user = userEvent.setup();
+    renderShop();
+
+    const firstOpen = mock.grocery.find((i) => !i.bought)!;
+    const checkbox = screen.getAllByRole('checkbox', { name: firstOpen.name })[0];
+    expect(checkbox).toHaveAttribute('aria-checked', 'false');
+
+    await user.click(checkbox);
+    expect(checkbox).toHaveAttribute('aria-checked', 'true');
   });
 });
