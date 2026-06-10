@@ -22,10 +22,10 @@ export default defineConfig({
     // The heavy overlay integration suites (Capture/Checkout/RecipeDetail/CookMode)
     // drive fake timers over large trees; under CPU contention (e.g. a concurrent
     // Docker/amd64 VRT run) they can exceed the 5s default and false-fail. A 15s
-    // ceiling costs nothing on a passing run, and bounding the pool keeps emulation
-    // load from starving workers — both remove the flake without serializing the suite.
+    // ceiling costs nothing on a passing run and removes the flake without
+    // serializing the suite. (The old `poolOptions.threads` bound was a no-op —
+    // Vitest defaults to the forks pool — and `poolOptions` was removed in Vitest 4.)
     testTimeout: 15000,
     hookTimeout: 15000,
-    poolOptions: { threads: { maxThreads: 4, minThreads: 1 } },
   },
 });
