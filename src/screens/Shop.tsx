@@ -110,13 +110,17 @@ function Tabs({
   tabs,
   value,
   onChange,
+  label,
 }: {
   tabs: TabDef[];
   value: string;
   onChange: (v: string) => void;
+  label: string;
 }) {
   return (
     <div
+      role="group"
+      aria-label={label}
       style={{
         display: 'inline-flex',
         gap: 4,
@@ -132,6 +136,7 @@ function Tabs({
           <button
             key={t.value}
             onClick={() => onChange(t.value)}
+            aria-pressed={active}
             style={{
               padding: '7px 14px',
               fontSize: 12.5,
@@ -958,6 +963,7 @@ export default function Shop() {
               </div>
             </div>
             <Tabs
+              label="Shopping mode"
               tabs={[
                 { label: 'Plan', value: 'plan' },
                 { label: 'In store', value: 'store' },

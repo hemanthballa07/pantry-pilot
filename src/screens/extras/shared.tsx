@@ -60,13 +60,17 @@ export function Tabs({
   tabs,
   value,
   onChange,
+  label,
 }: {
   tabs: TabDef[];
   value: string;
   onChange: (v: string) => void;
+  label: string;
 }) {
   return (
     <div
+      role="group"
+      aria-label={label}
       style={{
         display: 'inline-flex',
         gap: 4,
@@ -83,6 +87,7 @@ export function Tabs({
           <button
             key={t.value}
             onClick={() => onChange(t.value)}
+            aria-pressed={active}
             style={{
               padding: '7px 14px',
               fontSize: 12.5,
@@ -163,7 +168,7 @@ export function Ring({
   const off = circ * (1 - Math.min(100, value) / 100);
   return (
     <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
-      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }} aria-hidden="true">
         <circle
           cx={size / 2}
           cy={size / 2}

@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import Pantry from '@/screens/Pantry';
 import { mock } from '@/data/mock';
@@ -29,5 +29,15 @@ describe('Pantry — search wiring (WS3)', () => {
     renderPantry();
     expect(screen.getAllByText(target.name).length).toBeGreaterThan(0);
     if (other) expect(screen.queryByText(other.name)).toBeNull();
+  });
+
+  it('exposes the tab group as a labelled toggle group with aria-pressed (OQ-018)', () => {
+    renderPantry();
+    const group = screen.getByRole('group', { name: 'Pantry sections' });
+    const tabs = within(group).getAllByRole('button');
+    expect(tabs.length).toBeGreaterThan(1);
+    // every tab carries an explicit pressed state, exactly one is active
+    tabs.forEach((b) => expect(['true', 'false']).toContain(b.getAttribute('aria-pressed')));
+    expect(tabs.filter((b) => b.getAttribute('aria-pressed') === 'true')).toHaveLength(1);
   });
 });

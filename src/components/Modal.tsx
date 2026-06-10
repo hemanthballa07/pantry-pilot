@@ -7,8 +7,9 @@ interface ModalProps {
   children: ReactNode;
   /** Max width of the centered panel in px. */
   width?: number;
-  /** Accessible name for the dialog (announced by screen readers). */
-  label?: string;
+  /** Accessible name for the dialog (announced by screen readers). Required so no
+      dialog ships without an accessible name. */
+  label: string;
 }
 
 // Shared centered-modal shell — the modal-shaped sibling of Drawer, for overlays

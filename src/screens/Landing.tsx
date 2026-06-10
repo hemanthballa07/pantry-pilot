@@ -277,7 +277,7 @@ function Ring({
   const off = circ * (1 - value / 100);
   return (
     <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
-      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }} aria-hidden="true">
         <circle
           cx={size / 2}
           cy={size / 2}

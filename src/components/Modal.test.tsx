@@ -6,7 +6,7 @@ import { Modal } from './Modal';
 describe('Modal', () => {
   it('renders its children when open', () => {
     render(
-      <Modal open onClose={() => {}}>
+      <Modal open onClose={() => {}} label="Test modal">
         modal body
       </Modal>,
     );
@@ -15,7 +15,7 @@ describe('Modal', () => {
 
   it('renders nothing when closed', () => {
     render(
-      <Modal open={false} onClose={() => {}}>
+      <Modal open={false} onClose={() => {}} label="Test modal">
         modal body
       </Modal>,
     );
@@ -25,7 +25,7 @@ describe('Modal', () => {
   it('calls onClose when Escape is pressed', async () => {
     const onClose = vi.fn();
     render(
-      <Modal open onClose={onClose}>
+      <Modal open onClose={onClose} label="Test modal">
         body
       </Modal>,
     );
@@ -36,7 +36,7 @@ describe('Modal', () => {
   it('calls onClose when the backdrop is clicked', async () => {
     const onClose = vi.fn();
     const { container } = render(
-      <Modal open onClose={onClose}>
+      <Modal open onClose={onClose} label="Test modal">
         body
       </Modal>,
     );
@@ -49,7 +49,7 @@ describe('Modal', () => {
   it('does not call onClose when the panel itself is clicked', async () => {
     const onClose = vi.fn();
     render(
-      <Modal open onClose={onClose}>
+      <Modal open onClose={onClose} label="Test modal">
         modal body
       </Modal>,
     );
@@ -68,7 +68,7 @@ describe('Modal', () => {
 
   it('moves focus into the panel when opened', () => {
     render(
-      <Modal open onClose={() => {}}>
+      <Modal open onClose={() => {}} label="Test modal">
         body
       </Modal>,
     );
@@ -77,13 +77,13 @@ describe('Modal', () => {
 
   it('locks body scroll while open and restores it on close', () => {
     const { rerender } = render(
-      <Modal open onClose={() => {}}>
+      <Modal open onClose={() => {}} label="Test modal">
         body
       </Modal>,
     );
     expect(document.body.style.overflow).toBe('hidden');
     rerender(
-      <Modal open={false} onClose={() => {}}>
+      <Modal open={false} onClose={() => {}} label="Test modal">
         body
       </Modal>,
     );
@@ -95,12 +95,12 @@ describe('Modal', () => {
     document.body.appendChild(trigger);
     trigger.focus();
     const { rerender } = render(
-      <Modal open onClose={() => {}}>
+      <Modal open onClose={() => {}} label="Test modal">
         body
       </Modal>,
     );
     rerender(
-      <Modal open={false} onClose={() => {}}>
+      <Modal open={false} onClose={() => {}} label="Test modal">
         body
       </Modal>,
     );
@@ -110,7 +110,7 @@ describe('Modal', () => {
 
   it('traps Tab focus inside the modal, wrapping at the end (OQ-012)', () => {
     render(
-      <Modal open onClose={() => {}}>
+      <Modal open onClose={() => {}} label="Test modal">
         <button>alpha</button>
         <button>omega</button>
       </Modal>,

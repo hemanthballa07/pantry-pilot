@@ -187,8 +187,9 @@ export function AskPilot({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        {/* Conversation */}
-        <div ref={scroll} style={{ flex: 1, overflowY: 'auto', padding: 20 }}>
+        {/* Conversation — role="log" carries an implicit aria-live="polite", so
+            appended pilot replies are announced to screen readers. */}
+        <div ref={scroll} role="log" style={{ flex: 1, overflowY: 'auto', padding: 20 }}>
           {messages.map((m, i) => (
             <Bubble key={i} role={m.role} text={m.text} />
           ))}

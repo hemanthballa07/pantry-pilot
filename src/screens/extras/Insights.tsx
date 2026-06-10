@@ -1324,6 +1324,7 @@ export function Insights() {
     <div style={{ padding: '28px 28px 0' }}>
       <div style={{ marginBottom: 18 }}>
         <Tabs
+          label="Insights views"
           tabs={[
             { label: 'Budget', value: 'budget' },
             { label: 'Food waste', value: 'waste' },

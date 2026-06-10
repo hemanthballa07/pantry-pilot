@@ -582,7 +582,7 @@ export function RecipeDetail({
     : undefined;
 
   return (
-    <Drawer open={!!recipe} onClose={onClose} width={520} label={recipe?.name}>
+    <Drawer open={!!recipe} onClose={onClose} width={520} label={recipe?.name ?? 'Recipe'}>
       {recipe && <RecipeDetailBody recipe={recipe} onClose={onClose} />}
     </Drawer>
   );

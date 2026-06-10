@@ -71,13 +71,17 @@ function Tabs({
   tabs,
   value,
   onChange,
+  label,
 }: {
   tabs: TabDef[];
   value: string;
   onChange: (v: string) => void;
+  label: string;
 }) {
   return (
     <div
+      role="group"
+      aria-label={label}
       style={{
         display: 'inline-flex',
         gap: 4,
@@ -94,6 +98,7 @@ function Tabs({
           <button
             key={t.value}
             onClick={() => onChange(t.value)}
+            aria-pressed={active}
             style={{
               padding: '7px 14px',
               fontSize: 12.5,
@@ -667,7 +672,12 @@ function Recipes({
 
       {/* Filter row */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
-        <Tabs tabs={SHELF_TABS} value={shelf} onChange={(v) => setShelf(v as Shelf)} />
+        <Tabs
+          tabs={SHELF_TABS}
+          value={shelf}
+          onChange={(v) => setShelf(v as Shelf)}
+          label="Recipe shelf"
+        />
         <div style={{ flex: 1 }} />
         <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
           <span style={{ fontSize: 11.5, color: 'var(--ink-muted)' }}>Diet</span>
@@ -1472,6 +1482,7 @@ export default function Cook() {
         }}
       >
         <Tabs
+          label="Recipe sections"
           tabs={[
             { label: 'Explore cuisines', value: 'explore' },
             { label: 'Cook what I have', value: 'discover' },

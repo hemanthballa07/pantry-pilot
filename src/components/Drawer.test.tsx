@@ -6,7 +6,7 @@ import { Drawer } from './Drawer';
 describe('Drawer', () => {
   it('renders its children when open', () => {
     render(
-      <Drawer open onClose={() => {}}>
+      <Drawer open onClose={() => {}} label="Test drawer">
         drawer body
       </Drawer>,
     );
@@ -15,7 +15,7 @@ describe('Drawer', () => {
 
   it('renders nothing when closed', () => {
     render(
-      <Drawer open={false} onClose={() => {}}>
+      <Drawer open={false} onClose={() => {}} label="Test drawer">
         drawer body
       </Drawer>,
     );
@@ -25,7 +25,7 @@ describe('Drawer', () => {
   it('calls onClose when Escape is pressed', async () => {
     const onClose = vi.fn();
     render(
-      <Drawer open onClose={onClose}>
+      <Drawer open onClose={onClose} label="Test drawer">
         body
       </Drawer>,
     );
@@ -36,7 +36,7 @@ describe('Drawer', () => {
   it('calls onClose when the backdrop is clicked', async () => {
     const onClose = vi.fn();
     const { container } = render(
-      <Drawer open onClose={onClose}>
+      <Drawer open onClose={onClose} label="Test drawer">
         body
       </Drawer>,
     );
@@ -57,7 +57,7 @@ describe('Drawer', () => {
 
   it('moves focus into the drawer when opened', () => {
     const { container } = render(
-      <Drawer open onClose={() => {}}>
+      <Drawer open onClose={() => {}} label="Test drawer">
         body
       </Drawer>,
     );
@@ -66,13 +66,13 @@ describe('Drawer', () => {
 
   it('locks body scroll while open and restores it on close', () => {
     const { rerender } = render(
-      <Drawer open onClose={() => {}}>
+      <Drawer open onClose={() => {}} label="Test drawer">
         body
       </Drawer>,
     );
     expect(document.body.style.overflow).toBe('hidden');
     rerender(
-      <Drawer open={false} onClose={() => {}}>
+      <Drawer open={false} onClose={() => {}} label="Test drawer">
         body
       </Drawer>,
     );
@@ -84,12 +84,12 @@ describe('Drawer', () => {
     document.body.appendChild(trigger);
     trigger.focus();
     const { rerender } = render(
-      <Drawer open onClose={() => {}}>
+      <Drawer open onClose={() => {}} label="Test drawer">
         body
       </Drawer>,
     );
     rerender(
-      <Drawer open={false} onClose={() => {}}>
+      <Drawer open={false} onClose={() => {}} label="Test drawer">
         body
       </Drawer>,
     );
@@ -99,7 +99,7 @@ describe('Drawer', () => {
 
   it('traps Tab focus inside the drawer, wrapping at the end (OQ-012)', () => {
     render(
-      <Drawer open onClose={() => {}}>
+      <Drawer open onClose={() => {}} label="Test drawer">
         <button>alpha</button>
         <button>omega</button>
       </Drawer>,

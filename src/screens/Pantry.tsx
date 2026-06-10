@@ -138,7 +138,7 @@ function Ring({
   const off = circ * (1 - Math.min(100, pct) / 100);
   return (
     <div style={{ position: 'relative', width: size, height: size, flexShrink: 0 }}>
-      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+      <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }} aria-hidden="true">
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -229,13 +229,17 @@ function Tabs({
   tabs,
   value,
   onChange,
+  label,
 }: {
   tabs: TabDef[];
   value: string;
   onChange: (v: string) => void;
+  label: string;
 }) {
   return (
     <div
+      role="group"
+      aria-label={label}
       style={{
         display: 'inline-flex',
         gap: 4,
@@ -251,6 +255,7 @@ function Tabs({
           <button
             key={t.value}
             onClick={() => onChange(t.value)}
+            aria-pressed={active}
             style={{
               padding: '7px 14px',
               fontSize: 12.5,
@@ -550,6 +555,7 @@ function InventoryView({
         }}
       >
         <Tabs
+          label="Pantry view"
           tabs={LOC_TABS.map((t) => ({ ...t, count: counts[t.value] }))}
           value={loc}
           onChange={setLoc}
@@ -1917,7 +1923,7 @@ export default function Pantry() {
           flexWrap: 'wrap',
         }}
       >
-        <Tabs tabs={TABS} value={tab} onChange={setTab} />
+        <Tabs tabs={TABS} value={tab} onChange={setTab} label="Pantry sections" />
         {tab === 'inventory' && (
           <div style={{ display: 'flex', gap: 8 }}>
             <Button size="sm" variant="ghost" icon="receipt" onClick={openInbox}>
